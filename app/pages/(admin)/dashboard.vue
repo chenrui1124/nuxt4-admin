@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-definePageMeta({})
+definePageMeta({
+  group: 'admin',
+  i18nKeys: ['nav.dashboard'],
+})
 </script>
 
 <template>

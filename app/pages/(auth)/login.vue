@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui'
 
-import * as z from 'zod'
+import { z } from 'zod'
+
+definePageMeta({
+  group: 'auth',
+})
 
 const fields = computed(() => [
   {
@@ -26,7 +30,7 @@ const fields = computed(() => [
     defaultValue: false,
     label: $t('auth.remember'),
     ui: {
-      label:'mb-2'
+      label: 'mb-2',
     },
   },
 ])

@@ -3,6 +3,10 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 
 import { z } from 'zod'
 
+definePageMeta({
+  group: 'auth',
+})
+
 const fields = computed(() => [
   {
     name: 'email',
