@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   css: ['~/app.css'],
   devtools: { enabled: true },
+  ssr: false,
 
   // Modules
   modules: ['@nuxt/ui', '@nuxtjs/i18n', 'nuxt-auth-utils', '@pinia/nuxt'],
