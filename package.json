@@ -13,6 +13,7 @@
     "@nuxt/ui": "4.0.0-alpha.1",
     "@nuxtjs/i18n": "10.1.0",
     "@pinia/nuxt": "0.11.2",
+    "@vueuse/core": "^13.9.0",
     "bcryptjs": "^3.0.2",
     "nuxt": "^4.1.1",
     "nuxt-auth-utils": "0.5.24",
@@ -23,6 +24,7 @@
     "zod": "^4.1.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.0.0",
     "prettier": "^3.6.2",
     "prettier-plugin-packagejson": "^2.5.19",
     "prettier-plugin-tailwindcss": "^0.6.14",
