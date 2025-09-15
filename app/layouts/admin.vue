@@ -1,18 +1,16 @@
 <script lang="ts" setup>
 import { useToggle } from '@vueuse/core'
 
-const route = useRoute()
-
 const ui = useUiStore()
 
-const [sidebarVisible, toggleSidebarVisible] = useToggle(!ui.isMaxSm)
+const [sidebarExpanded, toggleSidebarVisible] = useToggle(!ui.isMaxSm)
 
 const sidebarToggleIcon = computed(() =>
   ui.isMaxSm
-    ? sidebarVisible
+    ? sidebarExpanded
       ? 'i-fluent:dismiss-24-regular'
       : 'i-fluent:list-24-regular'
-    : sidebarVisible
+    : sidebarExpanded
       ? 'i-fluent:panel-left-24-filled'
       : 'i-fluent:panel-left-24-regular',
 )
@@ -32,7 +30,7 @@ defineShortcuts({
         'aside main';
     "
     :style="{
-      gridTemplateColumns: ui.isMaxSm || sidebarVisible ? `${sidebarWidth} 1fr` : '3.5rem 1fr',
+      gridTemplateColumns: ui.isMaxSm || sidebarExpanded ? `${sidebarWidth} 1fr` : '3.5rem 1fr',
     }"
     :class="[
       'h-screen w-screen',
@@ -48,7 +46,7 @@ defineShortcuts({
       <UTooltip
         :disabled="ui.isMaxSm"
         :kbds="['Ctrl', 'B']"
-        :text="sidebarVisible ? $t('ui.collapse_sidebar') : $t('ui.expand_sidebar')"
+        :text="sidebarExpanded ? $t('ui.collapse_sidebar') : $t('ui.expand_sidebar')"
       >
         <UButton @click="toggleSidebarVisible()" :icon="sidebarToggleIcon" variant="ghost" />
       </UTooltip>
@@ -60,15 +58,15 @@ defineShortcuts({
       :class="[
         'overflow-y-auto',
         ui.isMaxSm
-          ? ['fixed inset-x-0 top-14 bottom-0 z-10 bg-(--ui-bg)', sidebarVisible || 'hidden']
+          ? ['fixed inset-x-0 top-14 bottom-0 z-10 bg-(--ui-bg)', sidebarExpanded || 'hidden']
           : 'overflow-x-hidden border-r border-r-accented',
       ]"
     >
       <div
-        :style="{ minWidth: sidebarVisible ? sidebarWidth : '3.5rem' }"
+        :style="{ minWidth: sidebarExpanded ? sidebarWidth : '3.5rem' }"
         :class="['flex flex-col gap-3 overflow-x-hidden overflow-y-auto p-3']"
       >
-        <!--  -->
+        <AsideNavigation :sidebar-expanded />
       </div>
     </aside>
     <main style="grid-area: main" :class="['overflow-y-auto', ui.isMaxSm && 'flex-1']">

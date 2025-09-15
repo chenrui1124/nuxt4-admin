@@ -14,6 +14,12 @@
     "username": "Username",
     "username_required": "Username must not be empty."
   },
+  "nav": {
+    "dashboard": "Dashboard",
+    "permissions": "Permissions",
+    "roles": "Roles",
+    "users": "Users"
+  },
   "ui": {
     "collapse_sidebar": "Collapse sidebar",
     "expand_sidebar": "Expand sidebar"
