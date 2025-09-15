@@ -1,1 +1,12 @@
-{}
+{
+  "auth": {
+    "continue_login": "立即登录",
+    "forgot_password": "忘记密码",
+    "login": "登录",
+    "password": "密码",
+    "password_required": "密码不能为空。",
+    "remember": "保存登录状态",
+    "username": "用户名",
+    "username_required": "用户名不能为空。"
+  }
+}
