@@ -1,2 +1,6 @@
 @import 'tailwindcss';
 @import '@nuxt/ui';
+
+@theme {
+  --default-font-family: 'Geist', var(--font-sans), var(--font-serif), sans-serif;
+}
