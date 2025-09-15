@@ -1,11 +1,16 @@
 {
   "auth": {
     "continue_login": "立即登录",
+    "email": "邮箱",
+    "email_invalid": "邮箱格式不正确。",
     "forgot_password": "忘记密码",
     "login": "登录",
     "password": "密码",
     "password_required": "密码不能为空。",
+    "password_reset": "重置密码",
     "remember": "保存登录状态",
+    "return": "返回",
+    "send_email": "发送邮件",
     "username": "用户名",
     "username_required": "用户名不能为空。"
   }
