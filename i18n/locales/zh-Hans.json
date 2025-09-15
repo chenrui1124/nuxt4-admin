@@ -13,5 +13,9 @@
     "send_email": "发送邮件",
     "username": "用户名",
     "username_required": "用户名不能为空。"
+  },
+  "ui": {
+    "collapse_sidebar": "收起侧边栏",
+    "expand_sidebar": "展开侧边栏"
   }
 }

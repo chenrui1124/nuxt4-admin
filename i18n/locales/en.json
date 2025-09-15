@@ -13,5 +13,9 @@
     "send_email": "Send email",
     "username": "Username",
     "username_required": "Username must not be empty."
+  },
+  "ui": {
+    "collapse_sidebar": "Collapse sidebar",
+    "expand_sidebar": "Expand sidebar"
   }
 }
