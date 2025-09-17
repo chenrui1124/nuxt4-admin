@@ -1,13 +1,18 @@
 <script lang="ts" setup>
 import type { DropdownMenuItem, TableColumn } from '@nuxt/ui'
+import type { UsersSchema } from '~~/shared/schema'
 
 import { refDebounced } from '@vueuse/core'
+import { da } from 'zod/locales'
 
 definePageMeta({
   group: 'admin',
   i18nKeys: ['nav.permissions', 'nav.users'],
 })
 
+/*
+ * Resolve components
+ */
 const UAvatar = resolveComponent('UAvatar')
 
 const UBadge = resolveComponent('UBadge')
@@ -20,14 +25,29 @@ const UDropdownMenu = resolveComponent('UDropdownMenu')
 
 const tableRef = useTemplateRef('table')
 
+/**
+ * Pagination
+ */
+const page = ref<number>(1)
+
+const limit = ref<number>(30)
+
+/*
+ * Filter
+ */
+const filterName = ref('')
+
+const debouncedName = refDebounced(filterName, 1000)
+
 /*
  * Source data
  */
 const { data } = useFetch('/api/users', {
-  default: () => [],
+  default: () => ({ data: [], meta: { total: 0 } }),
+  query: { page, limit, name: debouncedName },
 })
 
-type UserModel = (typeof data.value)[number]
+type UserModel = (typeof data.value.data)[number]
 
 /*
  * Column definitions
@@ -131,17 +151,6 @@ const columns = computed<TableColumn<UserModel>[]>(() => [
 const selection = ref<Record<string, boolean>>({})
 
 const selectionCount = computed(() => Object.keys(selection.value).length)
-
-/*
- * Filter
- */
-const filterName = ref('')
-
-const debouncedUsername = refDebounced(filterName, 1200)
-
-watch(debouncedUsername, value => {
-  //
-})
 </script>
 
 <template>
@@ -150,10 +159,21 @@ watch(debouncedUsername, value => {
       <div class="flex h-14 shrink-0 items-center gap-3 border-b border-b-accented px-3">
         <UInput
           v-model="filterName"
-          icon="i-fluent:search-24-regular"
+          leading-icon="i-fluent:search-24-regular"
           :placeholder="$t('admin.filter_by', { field: $t('admin.name').toLowerCase() })"
           class="mr-auto"
-        />
+          :ui="{ trailing: 'pe-1' }"
+          #trailing
+        >
+          <UButton
+            v-if="filterName"
+            @click="filterName = ''"
+            color="neutral"
+            icon="i-fluent:dismiss-24-regular"
+            size="sm"
+            variant="link"
+          />
+        </UInput>
         <UDropdownMenu
           :content="{ align: 'end' }"
           :items="
@@ -185,7 +205,7 @@ watch(debouncedUsername, value => {
         @select="row => row.toggleSelected()"
         :columns
         :column-pinning="{ left: ['select'], right: ['actions'] }"
-        :data
+        :data="data.data"
         :empty="$t('admin.empty')"
         sticky="header"
         class="flex-1 overflow-y-auto"
@@ -193,9 +213,14 @@ watch(debouncedUsername, value => {
       />
       <div class="flex h-14 shrink-0 items-center border-t border-t-accented px-3">
         <span v-if="selectionCount" class="ml-px text-sm/normal text-muted">
-          {{ $t('admin.selection_count', { count: selectionCount, total: data.length }) }}
+          {{ $t('admin.selection_count', { count: selectionCount, total: limit }) }}
         </span>
-        <UPagination class="ml-auto" />
+        <UPagination
+          v-model:page="page"
+          :items-per-page="limit"
+          :total="data.meta.total"
+          class="ml-auto"
+        />
       </div>
     </div>
   </NuxtLayout>
