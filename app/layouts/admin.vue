@@ -67,6 +67,7 @@ const breadcrumbItems = computed((): BreadcrumbItem[] =>
       />
       <LocaleSwitcher />
       <ColorModeSwitcher />
+      <UserMenu />
     </header>
     <aside
       style="grid-area: aside"
