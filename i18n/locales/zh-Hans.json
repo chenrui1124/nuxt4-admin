@@ -1,4 +1,17 @@
 {
+  "admin": {
+    "avatar": "头像",
+    "created_at": "创建时间",
+    "delete": "删除",
+    "display_columns": "显示列",
+    "edit": "编辑",
+    "email": "邮箱",
+    "empty": "暂无数据",
+    "filter_by": "按{field}筛选",
+    "name": "名称",
+    "role": "角色",
+    "selection_count": "已选择 {count} / {total} 行"
+  },
   "auth": {
     "continue_login": "立即登录",
     "credentials_invalid": "用户名或密码错误，请重试。",
@@ -24,6 +37,7 @@
   },
   "ui": {
     "collapse_sidebar": "收起侧边栏",
-    "expand_sidebar": "展开侧边栏"
+    "expand_sidebar": "展开侧边栏",
+    "logout": "退出登录"
   }
 }

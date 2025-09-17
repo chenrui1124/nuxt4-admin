@@ -1,4 +1,17 @@
 {
+  "admin": {
+    "avatar": "Avatar",
+    "created_at": "Created at",
+    "delete": "Delete",
+    "display_columns": "Display",
+    "edit": "Edit",
+    "email": "Email",
+    "empty": "No data",
+    "filter_by": "Filter by {field}",
+    "name": "Name",
+    "role": "Role",
+    "selection_count": "{count} of {total} row(s) selected"
+  },
   "auth": {
     "continue_login": "Continue",
     "credentials_invalid": "Invalid username or password. Please try again.",
@@ -24,6 +37,7 @@
   },
   "ui": {
     "collapse_sidebar": "Collapse sidebar",
-    "expand_sidebar": "Expand sidebar"
+    "expand_sidebar": "Expand sidebar",
+    "logout": "Logout"
   }
 }
