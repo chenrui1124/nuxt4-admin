@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui'
 
-import { z } from 'zod'
+import { useLoginSchema, type LoginSchema } from '~~/shared/schema'
 
 definePageMeta({
   group: 'auth',
@@ -35,20 +35,33 @@ const fields = computed(() => [
   },
 ])
 
-const schema = computed(() =>
-  z.object({
-    username: z.string().min(1, $t('auth.username_required')),
-    password: z.string().min(1, $t('auth.password_required')),
-  }),
-)
+const schema = useLoginSchema({
+  usernameRequired: $t('auth.username_required'),
+  passwordRequired: $t('auth.password_required'),
+})
 
-type Schema = z.output<typeof schema>
+const { fetch: refreshSession } = useUserSession()
 
-function onSubmitLogin(payload: FormSubmitEvent<Schema>) {
-  //
+const alert = reactive({
+  visible: false,
+  message: '',
+})
+
+async function onSubmitLogin(payload: FormSubmitEvent<LoginSchema>) {
+  try {
+    await $fetch('/api/login', { method: 'POST', body: payload.data })
+    await refreshSession()
+    await navigateTo('/')
+  } catch (error) {
+    const statusCode = (error as any).data.statusCode
+    alert.visible = true
+    if (statusCode === 401) {
+      alert.message = $t('auth.credentials_invalid')
+    } else {
+      alert.message = $t('auth.server_error')
+    }
+  }
 }
-
-const alertVisible = ref()
 </script>
 
 <template>
@@ -63,20 +76,21 @@ const alertVisible = ref()
       :title="$t('auth.login')"
       class="max-h-11/12 w-sm max-w-11/12"
     >
+      <template #providers>
+        <UAlert
+          v-if="alert.visible"
+          v-model:open="alert.visible"
+          close
+          color="error"
+          icon="i-fluent:info-24-filled"
+          :title="alert.message"
+          :ui="{ close: 'text-inverted hover:text-inverted/75 active:text-inverted' }"
+        />
+      </template>
       <template #password-hint>
         <ULink to="/password_reset" class="font-medium text-primary" tabindex="-1">
           {{ $t('auth.forgot_password') }}
         </ULink>
-      </template>
-      <template #validation>
-        <UAlert
-          v-if="alertVisible"
-          v-model:open="alertVisible"
-          close
-          color="error"
-          icon="i-fluent:info-24-filled"
-          :title="$t('auth.credentials_invalid')"
-        />
       </template>
     </UAuthForm>
   </NuxtLayout>

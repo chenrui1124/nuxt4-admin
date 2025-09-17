@@ -1,6 +1,7 @@
 {
   "auth": {
     "continue_login": "Continue",
+    "credentials_invalid": "Invalid username or password. Please try again.",
     "email": "Email",
     "email_invalid": "Email is invalid.",
     "forgot_password": "Forgot password",
@@ -11,6 +12,7 @@
     "remember": "Remember me",
     "return": "Return",
     "send_email": "Send email",
+    "server_error": "An error occurred on the server. Please try again later.",
     "username": "Username",
     "username_required": "Username must not be empty."
   },
