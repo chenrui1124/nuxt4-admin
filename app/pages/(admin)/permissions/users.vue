@@ -1,50 +1,39 @@
 <script lang="ts" setup>
-import type { DropdownMenuItem, TableColumn } from '@nuxt/ui'
-import type { UsersSchema } from '~~/shared/schema'
-
-import { refDebounced } from '@vueuse/core'
-import { da } from 'zod/locales'
+import type { TableColumn } from '@nuxt/ui'
+import type { PaginationSchema } from '~~/shared/schema'
 
 definePageMeta({
   group: 'admin',
   i18nKeys: ['nav.permissions', 'nav.users'],
 })
 
+const ui = useUiStore()
+
 /*
  * Resolve components
  */
 const UAvatar = resolveComponent('UAvatar')
-
 const UBadge = resolveComponent('UBadge')
-
 const UButton = resolveComponent('UButton')
-
 const UCheckbox = resolveComponent('UCheckbox')
-
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 
-const tableRef = useTemplateRef('table')
-
-/**
- * Pagination
- */
-const page = ref<number>(1)
-
-const limit = ref<number>(30)
-
 /*
- * Filter
+ * Pagination & Filter
  */
-const filterName = ref('')
-
-const debouncedName = refDebounced(filterName, 1000)
+const query = reactive<PaginationSchema>({
+  pageSize: 30,
+  pageIndex: 1,
+  searchFiled: 'name',
+  searchValue: '',
+})
 
 /*
  * Source data
  */
 const { data } = useFetch('/api/users', {
   default: () => ({ data: [], meta: { total: 0 } }),
-  query: { page, limit, name: debouncedName },
+  query,
 })
 
 type UserModel = (typeof data.value.data)[number]
@@ -52,6 +41,8 @@ type UserModel = (typeof data.value.data)[number]
 /*
  * Column definitions
  */
+const tableRef = useTemplateRef('table')
+
 const columns = computed<TableColumn<UserModel>[]>(() => [
   {
     id: 'select',
@@ -151,53 +142,18 @@ const columns = computed<TableColumn<UserModel>[]>(() => [
 const selection = ref<Record<string, boolean>>({})
 
 const selectionCount = computed(() => Object.keys(selection.value).length)
+
+function resetSelectionWhenUpdatePage() {
+  selection.value = {}
+}
 </script>
 
 <template>
   <NuxtLayout name="admin">
     <div class="flex max-h-full flex-col">
       <div class="flex h-14 shrink-0 items-center gap-3 border-b border-b-accented px-3">
-        <UInput
-          v-model="filterName"
-          leading-icon="i-fluent:search-24-regular"
-          :placeholder="$t('admin.filter_by', { field: $t('admin.name').toLowerCase() })"
-          class="mr-auto"
-          :ui="{ trailing: 'pe-1' }"
-          #trailing
-        >
-          <UButton
-            v-if="filterName"
-            @click="filterName = ''"
-            color="neutral"
-            icon="i-fluent:dismiss-24-regular"
-            size="sm"
-            variant="link"
-          />
-        </UInput>
-        <UDropdownMenu
-          :content="{ align: 'end' }"
-          :items="
-            tableRef?.tableApi
-              .getAllColumns()
-              .filter(col => col.getCanHide())
-              .map<DropdownMenuItem>(col => ({
-                label: $t(`admin.${col.id}`),
-                type: 'checkbox',
-                checked: col.getIsVisible(),
-                onUpdateChecked: (checked: boolean) =>
-                  tableRef?.tableApi.getColumn(col.id)?.toggleVisibility(!!checked),
-                onSelect: event => event.preventDefault(),
-              }))
-          "
-        >
-          <UButton
-            color="neutral"
-            trailing-icon="i-fluent:layout-column-four-focus-right-24-filled"
-            variant="outline"
-          >
-            {{ $t('admin.display_columns') }}
-          </UButton>
-        </UDropdownMenu>
+        <RowFilter v-model="query.searchValue" :field="$t('admin.name').toLowerCase()" />
+        <ColumnDisplayControl :table-api="tableRef?.tableApi" />
       </div>
       <UTable
         ref="table"
@@ -212,14 +168,20 @@ const selectionCount = computed(() => Object.keys(selection.value).length)
         :ui="{ thead: 'bg-muted' }"
       />
       <div class="flex h-14 shrink-0 items-center border-t border-t-accented px-3">
-        <span v-if="selectionCount" class="ml-px text-sm/normal text-muted">
-          {{ $t('admin.selection_count', { count: selectionCount, total: limit }) }}
+        <span v-if="selectionCount && !ui.isMaxSm" class="ml-px text-sm/normal text-muted">
+          {{
+            $t('admin.selection_count', {
+              count: selectionCount,
+              total: tableRef?.tableApi.getRowCount(),
+            })
+          }}
         </span>
         <UPagination
-          v-model:page="page"
-          :items-per-page="limit"
+          v-model:page="query.pageIndex"
+          @update:page="resetSelectionWhenUpdatePage"
+          :items-per-page="query.pageSize"
           :total="data.meta.total"
-          class="ml-auto"
+          :class="ui.isMaxSm ? 'mx-auto' : 'ml-auto'"
         />
       </div>
     </div>

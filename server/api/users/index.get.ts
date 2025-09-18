@@ -1,28 +1,34 @@
+import type { PaginationSchema } from '~~/shared/schema'
+
 import { mocks } from '~~/shared/mocks'
-import { UsersSchema } from '~~/shared/schema'
+import { cloneDeep } from 'es-toolkit'
 
 function getUsersWithRoleName() {
+  const users = cloneDeep(mocks.users)
+
   const roleMap = new Map(mocks.roles.map(role => [role.id, role.name]))
-  return mocks.users.map<SafeUser & { role: { name: string } }>(user => ({
+
+  return users.map<SafeUser & { role: { name: string } }>(user => ({
     ...user,
-    role: {
-      name: roleMap.get(user.roleId)!,
-    },
+    role: { name: roleMap.get(user.roleId)! },
   }))
 }
-
-const userWithRoleName = getUsersWithRoleName()
 
 export default defineEventHandler(async event => {
   await requireUserSession(event)
 
-  const { page, limit, name } = getQuery<UsersSchema>(event)
+  const userWithRoleName = getUsersWithRoleName()
 
-  const users = name ? userWithRoleName.filter(user => user.name.includes(name)) : userWithRoleName
+  const { pageIndex, pageSize, searchFiled, searchValue } = getQuery<PaginationSchema>(event)
 
-  const start = (Number(page) - 1) * Number(limit)
+  const filteredUsers =
+    searchValue && searchFiled && searchFiled === 'name'
+      ? userWithRoleName.filter(user => user[searchFiled].includes(searchValue))
+      : userWithRoleName
 
-  const responseUsers = users.slice(start, start + Number(limit))
+  const start = (Number(pageIndex) - 1) * Number(pageSize)
+
+  const responseUsers = filteredUsers.slice(start, start + Number(pageSize))
 
   return {
     data: responseUsers,

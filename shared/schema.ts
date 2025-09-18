@@ -15,11 +15,10 @@ export const useLoginSchema = ({
 
 export type LoginSchema = z.output<ReturnType<typeof useLoginSchema>>
 
-export const useUsersSchema = () =>
-  z.object({
-    page: z.number().min(1),
-    limit: z.number().min(1),
-    name: z.string(),
-  })
-
-export type UsersSchema = z.output<ReturnType<typeof useUsersSchema>>
+export const paginationSchema = z.object({
+  pageIndex: z.number().min(0),
+  pageSize: z.number().min(10),
+  searchFiled: z.string().optional(),
+  searchValue: z.string().optional(),
+})
+export type PaginationSchema = z.output<typeof paginationSchema>
