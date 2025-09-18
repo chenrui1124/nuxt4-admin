@@ -29,6 +29,22 @@ const items = computed<NavigationMenuItem[]>(() => [
       },
     ],
   },
+  {
+    label: $t('nav.settings'),
+    icon: 'i-fluent:settings-24-filled',
+    children: [
+      {
+        label: $t('nav.general'),
+        icon: 'i-fluent:person-24-filled',
+        to: '/settings/general',
+      },
+      {
+        label: $t('nav.security'),
+        icon: 'i-fluent:shield-24-filled',
+        to: '/settings/security',
+      },
+    ],
+  },
 ])
 </script>
 

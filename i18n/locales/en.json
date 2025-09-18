@@ -31,8 +31,11 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "general": "General",
     "permissions": "Permissions",
     "roles": "Roles",
+    "security": "Security",
+    "settings": "Settings",
     "users": "Users"
   },
   "ui": {

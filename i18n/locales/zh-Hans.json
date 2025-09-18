@@ -31,8 +31,11 @@
   },
   "nav": {
     "dashboard": "概览",
+    "general": "常规设置",
     "permissions": "权限",
     "roles": "角色管理",
+    "security": "安全设置",
+    "settings": "设置",
     "users": "用户管理"
   },
   "ui": {
