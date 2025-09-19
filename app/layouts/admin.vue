@@ -13,10 +13,10 @@ function toggleSidebarVisible() {
 
 const sidebarToggleIcon = computed(() =>
   ui.isMaxSm
-    ? sidebarExpanded
+    ? sidebarExpanded.value
       ? 'i-fluent:dismiss-24-regular'
       : 'i-fluent:list-24-regular'
-    : sidebarExpanded
+    : sidebarExpanded.value
       ? 'i-fluent:panel-left-24-filled'
       : 'i-fluent:panel-left-24-regular',
 )
