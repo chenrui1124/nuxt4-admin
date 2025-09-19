@@ -1,4 +1,4 @@
-import type { PaginationSchema } from '~~/shared/schema'
+import type { PaginationSchema } from '#shared/schema'
 
 import { useMockDatabase } from '~~/shared/mocks'
 
@@ -7,23 +7,23 @@ export default defineEventHandler(async event => {
 
   const db = useMockDatabase(id)
 
-  const users = db.users.findMany()
-
   const { pageIndex, pageSize, searchFiled, searchValue } = getQuery<PaginationSchema>(event)
 
-  const filteredUsers =
+  const roles = db.roles.findMany()
+
+  const filteredRoles =
     searchValue && searchFiled && searchFiled === 'name'
-      ? users.filter(user => user[searchFiled].includes(searchValue))
-      : users
+      ? roles.filter(user => user[searchFiled].includes(name))
+      : roles
 
   const start = (Number(pageIndex) - 1) * Number(pageSize)
 
-  const data = filteredUsers.slice(start, start + Number(pageSize))
+  const data = filteredRoles.slice(start, start + Number(pageSize))
 
   return {
     data,
     meta: {
-      total: users.length,
+      total: roles.length,
     },
   }
 })

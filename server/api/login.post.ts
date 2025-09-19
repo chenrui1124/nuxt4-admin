@@ -1,23 +1,24 @@
 import type { LoginSchema } from '#shared/schema'
 
+import { useMockAuthUser } from '#shared/mocks'
 import bcrypt from 'bcryptjs'
-import { mocks } from '#shared/mocks'
-
-function validateAuth(body: LoginSchema) {
-  return bcrypt.compareSync(body.password, mocks.authUser.password)
-}
 
 export default defineEventHandler(async event => {
-  const body = await readBody<LoginSchema>(event)
+  const { username, password, remember } = await readBody<LoginSchema>(event)
 
-  const user = mocks.authUser
+  const user = useMockAuthUser()
 
-  if (validateAuth(body)) {
+  if (username !== user.username) {
+    throw createError({ statusCode: 401 })
+  }
+
+  const isMatch = bcrypt.compareSync(password, user.password)
+  if (isMatch) {
     const { password: _, ...safeUser } = user
     await setUserSession(
       event,
       { user: safeUser },
-      { maxAge: body.remember ? 60 * 60 * 24 * 30 : void 0 },
+      { maxAge: remember ? 60 * 60 * 24 * 30 : void 0 },
     )
   } else {
     throw createError({ statusCode: 401 })
