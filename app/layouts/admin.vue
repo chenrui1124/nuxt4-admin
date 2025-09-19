@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import type { BreadcrumbItem } from '@nuxt/ui'
 
-import { useToggle } from '@vueuse/core'
-
 const route = useRoute()
 
 const ui = useUiStore()
 
-const [sidebarExpanded, toggleSidebarVisible] = useToggle(!ui.isMaxSm)
+const sidebarExpanded = useState(() => !ui.isMaxSm)
+
+function toggleSidebarVisible() {
+  sidebarExpanded.value = !sidebarExpanded.value
+}
 
 const sidebarToggleIcon = computed(() =>
   ui.isMaxSm
