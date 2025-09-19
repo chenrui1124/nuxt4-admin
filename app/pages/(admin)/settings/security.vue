@@ -7,6 +7,8 @@ definePageMeta({
 
 <template>
   <NuxtLayout name="admin">
-    <!--  -->
+    <div class="flex flex-col gap-6 p-6">
+      <UpdatePassword />
+    </div>
   </NuxtLayout>
 </template>
