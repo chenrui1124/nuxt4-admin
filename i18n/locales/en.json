@@ -45,6 +45,10 @@
     "username": "Username",
     "username_required": "Username must not be empty."
   },
+  "error": {
+    "not_found": "Page not found",
+    "unknown": "An unknown error occurred"
+  },
   "nav": {
     "dashboard": "Dashboard",
     "general": "General",
@@ -55,11 +59,13 @@
     "users": "Users"
   },
   "ui": {
+    "back": "Go back",
     "collapse_sidebar": "Collapse sidebar",
     "color_mode": "Color mode",
     "dark": "Dark",
     "expand_sidebar": "Expand sidebar",
     "github_repository": "GitHub repository",
+    "home": "Home",
     "light": "Light",
     "logout": "Logout",
     "navigation": "Navigation",

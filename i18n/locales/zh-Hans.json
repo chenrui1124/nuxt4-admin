@@ -45,6 +45,10 @@
     "username": "用户名",
     "username_required": "用户名不能为空。"
   },
+  "error": {
+    "not_found": "页面未找到",
+    "unknown": "未知错误"
+  },
   "nav": {
     "dashboard": "概览",
     "general": "常规设置",
@@ -55,11 +59,13 @@
     "users": "用户管理"
   },
   "ui": {
+    "back": "返回",
     "collapse_sidebar": "收起侧边栏",
     "color_mode": "颜色模式",
     "dark": "深色模式",
     "expand_sidebar": "展开侧边栏",
     "github_repository": "GitHub 仓库",
+    "home": "主页",
     "light": "浅色模式",
     "logout": "退出登录",
     "navigation": "导航",
