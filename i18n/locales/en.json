@@ -56,8 +56,15 @@
   },
   "ui": {
     "collapse_sidebar": "Collapse sidebar",
+    "color_mode": "Color mode",
+    "dark": "Dark",
     "expand_sidebar": "Expand sidebar",
     "github_repository": "GitHub repository",
-    "logout": "Logout"
+    "light": "Light",
+    "logout": "Logout",
+    "navigation": "Navigation",
+    "search": "Search",
+    "system": "System",
+    "type_command": "Type a command or search..."
   }
 }

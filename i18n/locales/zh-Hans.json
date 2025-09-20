@@ -56,8 +56,15 @@
   },
   "ui": {
     "collapse_sidebar": "收起侧边栏",
+    "color_mode": "颜色模式",
+    "dark": "深色模式",
     "expand_sidebar": "展开侧边栏",
     "github_repository": "GitHub 仓库",
-    "logout": "退出登录"
+    "light": "浅色模式",
+    "logout": "退出登录",
+    "navigation": "导航",
+    "search": "搜索",
+    "system": "跟随系统",
+    "type_command": "输入命令或搜索..."
   }
 }
