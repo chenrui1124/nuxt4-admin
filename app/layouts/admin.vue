@@ -27,9 +27,10 @@ defineShortcuts({
   ctrl_b: () => toggleSidebarVisible(),
 })
 
-const breadcrumbItems = computed((): BreadcrumbItem[] =>
-  (route.meta.i18nKeys ?? []).map(key => ({ label: $t(key) })),
-)
+const breadcrumbItems = computed((): BreadcrumbItem[] => {
+  const items = (route.meta.i18nKeys ?? []).map(key => ({ label: $t(key) }))
+  return ui.isMaxSm ? [items.at(-1)!] : items
+})
 </script>
 
 <template>
