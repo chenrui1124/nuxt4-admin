@@ -8,8 +8,8 @@ definePageMeta({
 <template>
   <NuxtLayout name="admin">
     <UPageList class="mx-auto w-lg max-w-full gap-6 p-6">
-      <UpdatePassword />
-      <AccountDeletion />
+      <SettingsUpdatePassword />
+      <SettingsAccountDeletion />
     </UPageList>
   </NuxtLayout>
 </template>

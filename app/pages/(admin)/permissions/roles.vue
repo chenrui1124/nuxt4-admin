@@ -139,8 +139,8 @@ function resetSelectionWhenUpdatePage() {
   <NuxtLayout name="admin">
     <div class="flex max-h-full flex-col">
       <div class="flex h-14 shrink-0 items-center gap-3 border-b border-b-accented px-3">
-        <RowFilter v-model="query.searchValue" :field="$t('admin.name').toLowerCase()" />
-        <ColumnDisplayControl :table-api="tableRef?.tableApi" />
+        <TableRowFilter v-model="query.searchValue" :field="$t('admin.name').toLowerCase()" />
+        <TableColumnDisplayControl :table-api="tableRef?.tableApi" />
       </div>
       <UTable
         ref="table"
