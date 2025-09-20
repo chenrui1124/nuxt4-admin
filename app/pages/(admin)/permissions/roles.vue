@@ -16,8 +16,6 @@ const ui = useUiStore()
 /*
  * Resolve components
  */
-const UAvatar = resolveComponent('UAvatar')
-const UBadge = resolveComponent('UBadge')
 const UButton = resolveComponent('UButton')
 const UCheckbox = resolveComponent('UCheckbox')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
