@@ -14,6 +14,13 @@
     "selection_count": "{count} of {total} row(s) selected"
   },
   "auth": {
+    "account": "Account",
+    "account_deletion": "Delete account",
+    "account_deletion_description": "You can delete your account here. This action is permanent and cannot be undone.",
+    "confirm_account_deletion_confirmation_description": "Once you delete your account, there is no going back. This action cannot be undone. All your data, including profile information and associated records, will be permanently removed. To confirm, please type {text} in the box below and click Confirm.",
+    "confirm_account_deletion_error": "Incorrect confirmation text. Please type DELETE to confirm.",
+    "confirm_account_deletion_title": "Confirm account deletion",
+    "confirm_delete": "Confirm delete",
     "continue_login": "Continue",
     "credentials_invalid": "Invalid username or password. Please try again.",
     "current_password": "Current password",
