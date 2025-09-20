@@ -1,4 +1,4 @@
-export interface User {
+export interface UnsafeUser {
   id: string
   username: string
   password: string
@@ -9,9 +9,9 @@ export interface User {
   roleId: string
 }
 
-export type SafeUser = Omit<User, 'password'>
+export type SafeUser = Omit<UnsafeUser, 'password'>
 
-interface Role {
+export interface Role {
   id: string
   name: string
   enabled: boolean
