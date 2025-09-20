@@ -76,14 +76,13 @@ const onSubmitUpdatePassword = throttle((payload: FormSubmitEvent<PasswordChange
     icon="i-fluent:password-24-filled"
     :title="$t('auth.password')"
     :description="$t('auth.password_change_description')"
-    class="mx-auto w-md max-w-full"
   >
     <UAuthForm
       @submit="onSubmitUpdatePassword"
       ref="authForm"
       :fields
       :schema
-      :submit="{ label: $t('auth.update') }"
+      :submit="{ label: $t('auth.update'), class: 'w-fit' }"
       :ui="{ header: 'items-start', description: 'text-left' }"
       #providers
     >
