@@ -57,6 +57,7 @@
   "ui": {
     "collapse_sidebar": "收起侧边栏",
     "expand_sidebar": "展开侧边栏",
+    "github_repository": "GitHub 仓库",
     "logout": "退出登录"
   }
 }

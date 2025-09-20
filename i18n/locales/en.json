@@ -57,6 +57,7 @@
   "ui": {
     "collapse_sidebar": "Collapse sidebar",
     "expand_sidebar": "Expand sidebar",
+    "github_repository": "GitHub repository",
     "logout": "Logout"
   }
 }
