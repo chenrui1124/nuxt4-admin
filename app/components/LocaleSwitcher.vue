@@ -3,6 +3,12 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 
 const { locale, locales, setLocale } = useI18n()
 
+useHead({
+  htmlAttrs: {
+    lang: () => locale.value,
+  },
+})
+
 const items = computed(() =>
   locales.value.map<DropdownMenuItem>(({ code, name }) => ({
     label: name,
