@@ -3,6 +3,10 @@ definePageMeta({
   group: 'admin',
   i18nKeys: ['nav.settings', 'nav.security'],
 })
+
+useHead({
+  title: () => $t('nav.security'),
+})
 </script>
 
 <template>

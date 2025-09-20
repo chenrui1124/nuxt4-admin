@@ -7,6 +7,10 @@ definePageMeta({
   group: 'auth',
 })
 
+useHead({
+  title: () => $t('auth.password_reset'),
+})
+
 const fields = computed(() => [
   {
     name: 'email',

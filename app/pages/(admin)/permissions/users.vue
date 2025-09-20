@@ -7,6 +7,10 @@ definePageMeta({
   i18nKeys: ['nav.permissions', 'nav.users'],
 })
 
+useHead({
+  title: () => $t('nav.users'),
+})
+
 const ui = useUiStore()
 
 /*

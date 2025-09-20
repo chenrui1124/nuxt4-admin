@@ -7,6 +7,10 @@ definePageMeta({
   group: 'auth',
 })
 
+useHead({
+  title: () => $t('auth.login'),
+})
+
 const fields = computed(() => [
   {
     name: 'username',
