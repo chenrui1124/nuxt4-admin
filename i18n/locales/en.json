@@ -4,6 +4,7 @@
     "confirm": "Confirm",
     "created_at": "Created at",
     "delete": "Delete",
+    "delete_confirmation": "Are you sure you want to delete the selected users?",
     "delete_users": "Delete user(s)",
     "display_columns": "Display",
     "edit": "Edit",

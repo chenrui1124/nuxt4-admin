@@ -4,6 +4,7 @@
     "confirm": "确认",
     "created_at": "创建时间",
     "delete": "删除",
+    "delete_confirmation": "确定要删除所选用户吗？",
     "delete_users": "删除用户",
     "display_columns": "显示列",
     "edit": "编辑",

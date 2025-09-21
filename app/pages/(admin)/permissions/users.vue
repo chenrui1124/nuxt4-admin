@@ -159,12 +159,6 @@ const selectionCount = computed(() => Object.keys(selection.value).length)
 /*
  * Actions
  */
-function useUpsertUser() {
-  upsertModalRef.value?.useUpsertUser()
-}
-
-function useDeleteUsers() {}
-
 function onClickBatchDelete() {
   const selectedItems = tableRef.value?.tableApi.getSelectedRowModel().rows.map(row => row.original)
   if (selectedItems) {
@@ -178,7 +172,12 @@ function onClickBatchDelete() {
     <div class="flex max-h-full flex-col">
       <div class="flex h-14 shrink-0 items-center gap-3 border-b border-b-accented px-3">
         <TableRowFilter v-model="query.searchValue" :field="$t('admin.name').toLowerCase()" />
-        <UButton @click="onClickBatchDelete()" color="error" icon="i-fluent:delete-24-filled">
+        <UButton
+          v-if="selectionCount"
+          @click="onClickBatchDelete()"
+          color="error"
+          icon="i-fluent:delete-24-filled"
+        >
           删除
         </UButton>
         <UButton @click="useUpsertUser()" icon="i-fluent:add-24-regular">新增</UButton>
