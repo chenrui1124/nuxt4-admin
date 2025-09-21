@@ -1,17 +1,23 @@
 {
   "admin": {
     "avatar": "头像",
+    "confirm": "确认",
     "created_at": "创建时间",
     "delete": "删除",
+    "delete_users": "删除用户",
     "display_columns": "显示列",
     "edit": "编辑",
+    "edit_user": "编辑用户",
     "email": "邮箱",
     "empty": "暂无数据",
     "enabled": "启用",
     "filter_by": "按{field}筛选",
     "name": "名称",
+    "new_user": "创建用户",
     "role": "角色",
-    "selection_count": "已选择 {count} / {total} 行"
+    "save_changes": "保存更改",
+    "selection_count": "已选择 {count} / {total} 行",
+    "send_verification_email": "发送验证邮件"
   },
   "auth": {
     "account": "账户",

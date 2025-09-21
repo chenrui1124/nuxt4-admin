@@ -1,17 +1,23 @@
 {
   "admin": {
     "avatar": "Avatar",
+    "confirm": "Confirm",
     "created_at": "Created at",
     "delete": "Delete",
+    "delete_users": "Delete user(s)",
     "display_columns": "Display",
     "edit": "Edit",
+    "edit_user": "Edit user",
     "email": "Email",
     "empty": "No data",
     "enabled": "Enabled",
     "filter_by": "Filter by {field}",
     "name": "Name",
+    "new_user": "New user",
     "role": "Role",
-    "selection_count": "{count} of {total} row(s) selected"
+    "save_changes": "Save changes",
+    "selection_count": "{count} of {total} row(s) selected",
+    "send_verification_email": "Send verification email"
   },
   "auth": {
     "account": "Account",
