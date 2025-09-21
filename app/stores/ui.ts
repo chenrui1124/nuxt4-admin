@@ -1,7 +1,5 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-import { useMediaQuery } from '@vueuse/core'
-
 export const useUiStore = defineStore('ui', () => {
   const { t } = useI18n()
 

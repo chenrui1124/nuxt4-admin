@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   ssr: false,
 
   // Modules
-  modules: ['@nuxt/ui', '@nuxtjs/i18n', 'nuxt-auth-utils', '@pinia/nuxt'],
+  modules: ['@nuxt/ui', '@nuxtjs/i18n', '@vueuse/nuxt', 'nuxt-auth-utils', '@pinia/nuxt'],
 
   // @nuxt/ui
   ui: {

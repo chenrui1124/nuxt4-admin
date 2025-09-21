@@ -3,8 +3,6 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 
 import { z } from 'zod'
 
-const formRef = useTemplateRef('form')
-
 const CONFIRMATION_TEXT = 'DELETE'
 
 const state = reactive({
@@ -20,8 +18,18 @@ const schema = computed(() =>
   }),
 )
 
-function onSubmitDeleteAccount(payload: FormSubmitEvent<any>) {
+const formRef = useTemplateRef('form')
+
+function onClickTriggerSubmit() {
+  formRef.value?.submit()
+}
+
+const [loading, toggleLoading] = useToggle()
+
+async function onSubmitDeleteAccount(payload: FormSubmitEvent<any>) {
+  toggleLoading(true)
   //
+  toggleLoading(false)
 }
 </script>
 
@@ -53,7 +61,7 @@ function onSubmitDeleteAccount(payload: FormSubmitEvent<any>) {
         </UForm>
       </template>
       <template #footer>
-        <UButton @click="formRef?.submit()" color="error">
+        <UButton @click="onClickTriggerSubmit" color="error" :loading>
           {{ $t('auth.confirm_delete') }}
         </UButton>
       </template>
