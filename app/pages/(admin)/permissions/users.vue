@@ -174,13 +174,18 @@ function onClickBatchDelete() {
         <TableRowFilter v-model="query.searchValue" :field="$t('admin.name').toLowerCase()" />
         <UButton
           v-if="selectionCount"
+          :aria-label="ui.isMaxSm ? $t('admin.delete') : void 0"
           @click="onClickBatchDelete()"
           color="error"
           icon="i-fluent:delete-24-filled"
-        >
-          删除
-        </UButton>
-        <UButton @click="useUpsertUser()" icon="i-fluent:add-24-regular">新增</UButton>
+          :label="ui.isMaxSm ? void 0 : $t('admin.delete')"
+        />
+        <UButton
+          :aria-label="ui.isMaxSm ? $t('admin.new_user') : void 0"
+          @click="upsertModalRef?.useUpsertUser()"
+          icon="i-fluent:add-24-regular"
+          :label="ui.isMaxSm ? void 0 : $t('admin.new_user')"
+        />
         <TableColumnDisplayControl :table-api="tableRef?.tableApi" />
       </div>
       <UTable
