@@ -13,7 +13,7 @@ useHead({
   <NuxtLayout name="admin">
     <UPageList class="mx-auto w-lg max-w-full gap-6 p-6">
       <SettingsUpdatePassword />
-      <SettingsAccountDeletion />
+      <SettingsDeleteAccount />
     </UPageList>
   </NuxtLayout>
 </template>

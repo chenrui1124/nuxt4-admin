@@ -3,7 +3,7 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 
 import { z } from 'zod'
 
-const form = useTemplateRef('form')
+const formRef = useTemplateRef('form')
 
 const CONFIRMATION_TEXT = 'DELETE'
 
@@ -53,7 +53,7 @@ function onSubmitDeleteAccount(payload: FormSubmitEvent<any>) {
         </UForm>
       </template>
       <template #footer>
-        <UButton @click="form?.submit()" color="error">
+        <UButton @click="formRef?.submit()" color="error">
           {{ $t('auth.confirm_delete') }}
         </UButton>
       </template>

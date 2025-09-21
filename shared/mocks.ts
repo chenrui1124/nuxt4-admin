@@ -1,4 +1,4 @@
-import type { Role, User, SafeUser } from './types/models'
+import type { Role, UnsafeUser, SafeUser } from './types/models'
 
 import { faker, fakerZH_CN } from '@faker-js/faker'
 import bcrypt from 'bcryptjs'
@@ -24,7 +24,7 @@ const initialRoles: Role[] = [
   },
 ]
 
-const authUser: User = Object.freeze({
+const authUser: UnsafeUser = Object.freeze({
   id: nanoid(),
   username: 'admin',
   password: bcrypt.hashSync('12345678', 10),
