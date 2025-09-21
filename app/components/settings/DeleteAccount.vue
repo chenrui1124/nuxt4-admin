@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from '@nuxt/ui'
 
+import { ACCOUNT_DELETION_CONFIRM_TEXT } from '~~/shared/consts'
 import { z } from 'zod'
-
-const CONFIRMATION_TEXT = 'DELETE'
 
 const state = reactive({
   confirm: '',
@@ -12,7 +11,7 @@ const state = reactive({
 const schema = computed(() =>
   z.object({
     confirm: z.custom(
-      value => value === CONFIRMATION_TEXT,
+      value => value === ACCOUNT_DELETION_CONFIRM_TEXT,
       $t('auth.confirm_account_deletion_error'),
     ),
   }),
@@ -51,7 +50,7 @@ async function onSubmitDeleteAccount(payload: FormSubmitEvent<any>) {
           <p class="mb-3 text-sm/normal">
             <I18nT keypath="auth.confirm_account_deletion_description">
               <template #text>
-                <span class="text-error">{{ CONFIRMATION_TEXT }}</span>
+                <span class="text-error">{{ ACCOUNT_DELETION_CONFIRM_TEXT }}</span>
               </template>
             </I18nT>
           </p>

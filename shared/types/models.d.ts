@@ -1,19 +1,15 @@
-export interface UnsafeUser {
-  id: string
-  username: string
-  password: string
-  createdAt: Date
-  name: string
-  email: string
-  avatar?: string
-  roleId: string
-}
+import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 
-export type SafeUser = Omit<UnsafeUser, 'password'>
+import * as schema from '~~/server/database/schema'
 
-export interface Role {
-  id: string
-  name: string
-  enabled: boolean
-  createdAt: Date
-}
+export type UserSelectModel = InferSelectModel<typeof schema.users>
+
+export type UserInsertModel = InferInsertModel<typeof schema.users>
+
+export type SafeUserSelectModel = Omit<UserSelectModel, 'hashedPassword'>
+
+export type SafeUserInsertModel = Omit<UserInsertModel, 'hashedPassword'>
+
+export type RoleSelectModel = InferSelectModel<typeof schema.roles>
+
+export type RoleInsertModel = InferInsertModel<typeof schema.roles>

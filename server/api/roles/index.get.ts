@@ -1,8 +1,8 @@
 import type { PaginationSchema } from '#shared/schema'
 
-import { useMockDatabase } from '~~/shared/mocks'
+import { useMockDatabase } from '#shared/mocks'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async (event): Promise<GetRolesResponse> => {
   const { id } = await requireUserSession(event)
 
   const db = useMockDatabase(id)

@@ -39,14 +39,14 @@ const { data } = useFetch('/api/roles', {
   query,
 })
 
-type UserModel = (typeof data.value.data)[number]
+type SerializeRole = (typeof data.value.data)[number]
 
 /*
  * Column definitions
  */
 const tableRef = useTemplateRef('table')
 
-const columns = computed<TableColumn<UserModel>[]>(() => [
+const columns = computed<TableColumn<SerializeRole>[]>(() => [
   {
     id: 'select',
     enableHiding: false,

@@ -1,4 +1,4 @@
-import type { Role, UnsafeUser, SafeUser } from './types/models'
+import type { RoleSelectModel, SafeUserSelectModel, UserSelectModel } from './types/models'
 
 import { faker, fakerZH_CN } from '@faker-js/faker'
 import bcrypt from 'bcryptjs'
@@ -9,7 +9,7 @@ function generateAvatar() {
   return `https://avatar.iran.liara.run/public/${faker.number.int({ min: 10, max: 99 })}`
 }
 
-const initialRoles: Role[] = [
+const initialRoles: RoleSelectModel[] = [
   {
     id: nanoid(),
     name: 'admin',
@@ -24,10 +24,10 @@ const initialRoles: Role[] = [
   },
 ]
 
-const authUser: UnsafeUser = Object.freeze({
+const authUser: UserSelectModel = Object.freeze({
   id: nanoid(),
   username: 'admin',
-  password: bcrypt.hashSync('12345678', 10),
+  hashedPassword: bcrypt.hashSync('12345678', 10),
   createdAt: new Date(),
   email: 'admin@example.com',
   name: fakerZH_CN.person.fullName(),
@@ -42,7 +42,7 @@ class Users {
     this._md = mockData
   }
 
-  private _data: SafeUser[] = Array.from({ length: 99 }).map(() => ({
+  private _data: SafeUserSelectModel[] = Array.from({ length: 99 }).map(() => ({
     id: nanoid(),
     username: faker.internet.username(),
     createdAt: new Date(),
@@ -53,7 +53,7 @@ class Users {
   }))
 
   findMany() {
-    const result = [omit(authUser, ['password']), ...this._data]
+    const result = [omit(authUser, ['hashedPassword']), ...this._data]
     const roles = this._md.roles.findMany()
     return result.map(user => ({
       ...user,
@@ -71,7 +71,7 @@ class Roles {
     this._md = mockData
   }
 
-  private _data: Role[] = cloneDeep(initialRoles)
+  private _data: RoleSelectModel[] = cloneDeep(initialRoles)
 
   findMany() {
     return this._data

@@ -40,14 +40,14 @@ const { data } = useFetch('/api/users', {
   query,
 })
 
-type UserModel = (typeof data.value.data)[number]
+type SerializeSafeUser = (typeof data.value.data)[number]
 
 /*
  * Column definitions
  */
 const tableRef = useTemplateRef('table')
 
-const columns = computed<TableColumn<UserModel>[]>(() => [
+const columns = computed<TableColumn<SerializeSafeUser>[]>(() => [
   {
     id: 'select',
     enableHiding: false,
@@ -89,7 +89,7 @@ const columns = computed<TableColumn<UserModel>[]>(() => [
       h(
         UBadge,
         { color: 'neutral', variant: 'soft' },
-        { default: () => row.getValue<UserModel['role']>('role').name },
+        { default: () => row.getValue<SerializeSafeUser['role']>('role').name },
       ),
   },
   {

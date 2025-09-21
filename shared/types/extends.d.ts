@@ -1,5 +1,3 @@
-import type { UnsafeUser } from './models'
-
 declare module '#app' {
   interface PageMeta {
     group: 'admin' | 'auth'
@@ -8,7 +6,7 @@ declare module '#app' {
 }
 
 declare module '#auth-utils' {
-  interface User extends UnsafeUser {}
+  interface User extends UserSelectModel {}
 }
 
 export {}
