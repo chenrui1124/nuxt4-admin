@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui'
+import type { LoginSchema } from '#shared/schema'
 
-import { useLoginSchema, type LoginSchema } from '~~/shared/schema'
+import { useLoginSchema } from '#shared/schema'
 
 definePageMeta({
   group: 'auth',
@@ -46,23 +47,26 @@ const schema = useLoginSchema({
 
 const { fetch: refreshSession } = useUserSession()
 
-const alert = reactive({
-  visible: false,
-  message: '',
-})
+const [alert, restoreAlert] = useDefaultRef(
+  () => ({
+    visible: false,
+    message: (): string => '',
+  }),
+  { deep: true },
+)
 
 async function onSubmitLogin(payload: FormSubmitEvent<LoginSchema>) {
   try {
+    restoreAlert()
     await $fetch('/api/login', { method: 'POST', body: payload.data })
     await refreshSession()
     await navigateTo('/')
   } catch (error) {
     const statusCode = (error as any).data.statusCode
-    alert.visible = true
-    if (statusCode === 401) {
-      alert.message = $t('auth.credentials_invalid')
-    } else {
-      alert.message = $t('auth.server_error')
+    alert.value = {
+      visible: true,
+      message:
+        statusCode === 401 ? () => $t('auth.credentials_invalid') : () => $t('auth.server_error'),
     }
   }
 }
@@ -81,15 +85,7 @@ async function onSubmitLogin(payload: FormSubmitEvent<LoginSchema>) {
       class="max-h-11/12 w-sm max-w-11/12"
     >
       <template #providers>
-        <UAlert
-          v-if="alert.visible"
-          v-model:open="alert.visible"
-          close
-          color="error"
-          icon="i-fluent:info-24-filled"
-          :title="alert.message"
-          :ui="{ close: 'text-inverted hover:text-inverted/75 active:text-inverted' }"
-        />
+        <ErrorAlert v-model:open="alert.visible" :message="alert.message()" />
       </template>
       <template #password-hint>
         <ULink to="/password_reset" class="font-medium text-primary" tabindex="-1">

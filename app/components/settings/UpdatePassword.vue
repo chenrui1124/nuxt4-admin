@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { AuthFormProps, FormSubmitEvent } from '@nuxt/ui'
 
-import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from '~~/shared/consts'
+import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from '#shared/consts'
 import { throttle } from 'es-toolkit'
 import { z } from 'zod'
 
@@ -45,20 +45,24 @@ const schema = computed(() => {
 
 type PasswordChangeSchema = z.output<typeof schema.value>
 
-const alert = reactive({
-  visible: false,
-  message: '',
-})
+const [alert, restoreAlert] = useDefaultRef(
+  () => ({
+    visible: false,
+    message: (): string => '',
+  }),
+  { deep: true },
+)
 
 const authFormRef = useTemplateRef('authForm')
 
 const onSubmitUpdatePassword = throttle((payload: FormSubmitEvent<PasswordChangeSchema>) => {
-  alert.visible = false
-  alert.message = ''
+  restoreAlert()
   const { currentPassword, newPassword } = payload.data
   if (currentPassword === newPassword) {
-    alert.visible = true
-    alert.message = $t('auth.password_same')
+    alert.value = {
+      visible: true,
+      message: () => $t('auth.password_same'),
+    }
   } else {
     authFormRef.value!.state.currentPassword = ''
     authFormRef.value!.state.newPassword = ''
@@ -86,15 +90,7 @@ const onSubmitUpdatePassword = throttle((payload: FormSubmitEvent<PasswordChange
       :ui="{ header: 'items-start', description: 'text-left' }"
       #providers
     >
-      <UAlert
-        v-if="alert.visible"
-        v-model:open="alert.visible"
-        close
-        color="error"
-        icon="i-fluent:info-24-filled"
-        :title="alert.message"
-        :ui="{ close: 'text-inverted hover:text-inverted/75 active:text-inverted' }"
-      />
+      <ErrorAlert v-model:open="alert.visible" :message="alert.message()" />
     </UAuthForm>
   </UPageCard>
 </template>

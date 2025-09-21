@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from '@nuxt/ui'
 
-import { ACCOUNT_DELETION_CONFIRM_TEXT } from '~~/shared/consts'
+import { ACCOUNT_DELETION_CONFIRM_TEXT } from '#shared/consts'
 import { z } from 'zod'
 
 const state = reactive({
