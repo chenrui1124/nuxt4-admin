@@ -14,6 +14,13 @@ useHead({
 const ui = useUiStore()
 
 /*
+ * Refs
+ */
+const tableRef = useTemplateRef('table')
+const upsertModalRef = useTemplateRef('upsertModal')
+const deleteModalRef = useTemplateRef('deleteModal')
+
+/*
  * Resolve components
  */
 const UAvatar = resolveComponent('UAvatar')
@@ -45,8 +52,6 @@ type SerializeSafeUser = (typeof data.value.data)[number]
 /*
  * Column definitions
  */
-const tableRef = useTemplateRef('table')
-
 const columns = computed<TableColumn<SerializeSafeUser>[]>(() => [
   {
     id: 'select',
@@ -118,13 +123,17 @@ const columns = computed<TableColumn<SerializeSafeUser>[]>(() => [
             {
               icon: 'i-fluent:edit-24-filled',
               label: $t('admin.edit'),
-              onSelect() {},
+              onSelect() {
+                upsertModalRef.value?.useUpsertUser(row.original)
+              },
             },
             {
               color: 'error',
               icon: 'i-fluent:delete-24-filled',
               label: $t('admin.delete'),
-              onSelect() {},
+              onSelect() {
+                deleteModalRef.value?.useDeleteUsers([row.original])
+              },
             },
           ],
         },
@@ -143,12 +152,24 @@ const columns = computed<TableColumn<SerializeSafeUser>[]>(() => [
 /*
  * Row selection
  */
-const selection = ref<Record<string, boolean>>({})
+const [selection, restoreSelection] = useDefaultRef<Record<number, true>>(() => ({}))
 
 const selectionCount = computed(() => Object.keys(selection.value).length)
 
-function resetSelectionWhenUpdatePage() {
-  selection.value = {}
+/*
+ * Actions
+ */
+function useUpsertUser() {
+  upsertModalRef.value?.useUpsertUser()
+}
+
+function useDeleteUsers() {}
+
+function onClickBatchDelete() {
+  const selectedItems = tableRef.value?.tableApi.getSelectedRowModel().rows.map(row => row.original)
+  if (selectedItems) {
+    deleteModalRef.value?.useDeleteUsers(selectedItems)
+  }
 }
 </script>
 
@@ -157,6 +178,10 @@ function resetSelectionWhenUpdatePage() {
     <div class="flex max-h-full flex-col">
       <div class="flex h-14 shrink-0 items-center gap-3 border-b border-b-accented px-3">
         <TableRowFilter v-model="query.searchValue" :field="$t('admin.name').toLowerCase()" />
+        <UButton @click="onClickBatchDelete()" color="error" icon="i-fluent:delete-24-filled">
+          删除
+        </UButton>
+        <UButton @click="useUpsertUser()" icon="i-fluent:add-24-regular">新增</UButton>
         <TableColumnDisplayControl :table-api="tableRef?.tableApi" />
       </div>
       <UTable
@@ -182,12 +207,16 @@ function resetSelectionWhenUpdatePage() {
         </span>
         <UPagination
           v-model:page="query.pageIndex"
-          @update:page="resetSelectionWhenUpdatePage"
+          @update:page="restoreSelection"
           :items-per-page="query.pageSize"
           :total="data.meta.total"
           :class="ui.isMaxSm ? 'mx-auto' : 'ml-auto'"
         />
       </div>
     </div>
+
+    <!-- Modal -->
+    <PermissionsUpsertUser ref="upsertModal" />
+    <PermissionsDeleteUsers ref="deleteModal" />
   </NuxtLayout>
 </template>
