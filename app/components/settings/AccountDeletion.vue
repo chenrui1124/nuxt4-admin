@@ -53,7 +53,7 @@ function onSubmitDeleteAccount(payload: FormSubmitEvent<any>) {
         </UForm>
       </template>
       <template #footer>
-        <UButton @click="form?.submit()" color="error" icon="i-fluent:dismiss-circle-24-filled">
+        <UButton @click="form?.submit()" color="error">
           {{ $t('auth.confirm_delete') }}
         </UButton>
       </template>
