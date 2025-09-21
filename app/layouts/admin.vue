@@ -85,6 +85,7 @@ const breadcrumbItems = computed((): BreadcrumbItem[] => {
         :style="{ minWidth: sidebarExpanded ? sidebarWidth : '3.5rem' }"
         :class="['flex flex-col gap-3 overflow-x-hidden overflow-y-auto p-3']"
       >
+        <AppBrand :sidebar-expanded />
         <CommandPalette :sidebar-expanded />
         <AsideNavigation :sidebar-expanded />
       </div>
