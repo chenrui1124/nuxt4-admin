@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from '@nuxt/ui'
-
 import { z } from 'zod'
 
 definePageMeta({

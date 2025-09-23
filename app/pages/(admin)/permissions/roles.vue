@@ -11,7 +11,7 @@ useHead({
   title: () => $t('nav.roles'),
 })
 
-const ui = useUiStore()
+const layout = useLayoutStore()
 
 /*
  * Resolve components
@@ -157,7 +157,7 @@ function resetSelectionWhenUpdatePage() {
         :ui="{ thead: 'bg-muted' }"
       />
       <div class="flex h-14 shrink-0 items-center border-t border-t-accented px-3">
-        <span v-if="selectionCount && !ui.isMaxSm" class="ml-px text-sm/normal text-muted">
+        <span v-if="selectionCount && !layout.isMaxSm" class="ml-px text-sm/normal text-muted">
           {{
             $t('admin.selection_count', {
               count: selectionCount,
@@ -170,7 +170,7 @@ function resetSelectionWhenUpdatePage() {
           @update:page="resetSelectionWhenUpdatePage"
           :items-per-page="query.pageSize"
           :total="data.meta.total"
-          :class="ui.isMaxSm ? 'mx-auto' : 'ml-auto'"
+          :class="layout.isMaxSm ? 'mx-auto' : 'ml-auto'"
         />
       </div>
     </div>

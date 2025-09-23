@@ -1,9 +1,8 @@
-import type { RoleSelectModel, SafeUserSelectModel, UserSelectModel } from './types/models'
-
 import { faker, fakerZH_CN } from '@faker-js/faker'
 import bcrypt from 'bcryptjs'
 import { cloneDeep, omit } from 'es-toolkit'
 import { nanoid } from 'nanoid'
+import type { RoleSelectModel, SafeUserSelectModel, UserSelectModel } from './types/models'
 
 function generateAvatar() {
   return `https://avatar.iran.liara.run/public/${faker.number.int({ min: 10, max: 99 })}`

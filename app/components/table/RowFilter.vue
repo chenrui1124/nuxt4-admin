@@ -17,7 +17,7 @@ watch(debouncedFilter, value => emit('update:modelValue', value))
 
 <template>
   <UInput
-    v-model="filter"
+    v-model.trim="filter"
     leading-icon="i-fluent:search-24-regular"
     :placeholder="$t('admin.filter_by', { field })"
     class="mr-auto"

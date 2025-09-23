@@ -3,16 +3,16 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 
 const route = useRoute()
 
-const ui = useUiStore()
+const layout = useLayoutStore()
 
-const sidebarExpanded = useState(() => !ui.isMaxSm)
+const sidebarExpanded = useState(() => !layout.isMaxSm)
 
 function toggleSidebarVisible() {
   sidebarExpanded.value = !sidebarExpanded.value
 }
 
 const sidebarToggleIcon = computed(() =>
-  ui.isMaxSm
+  layout.isMaxSm
     ? sidebarExpanded.value
       ? 'i-fluent:dismiss-24-regular'
       : 'i-fluent:list-24-regular'
@@ -21,7 +21,7 @@ const sidebarToggleIcon = computed(() =>
       : 'i-fluent:panel-left-24-regular',
 )
 
-const sidebarWidth = '15rem'
+const SIDEBAR_WIDTH = '15rem'
 
 defineShortcuts({
   ctrl_b: () => toggleSidebarVisible(),
@@ -29,7 +29,7 @@ defineShortcuts({
 
 const breadcrumbItems = computed((): BreadcrumbItem[] => {
   const items = (route.meta.i18nKeys ?? []).map(key => ({ label: $t(key) }))
-  return ui.isMaxSm ? [items.at(-1)!] : items
+  return layout.isMaxSm ? [items.at(-1)!] : items
 })
 </script>
 
@@ -41,11 +41,12 @@ const breadcrumbItems = computed((): BreadcrumbItem[] => {
         'aside main';
     "
     :style="{
-      gridTemplateColumns: ui.isMaxSm || sidebarExpanded ? `${sidebarWidth} 1fr` : '3.5rem 1fr',
+      gridTemplateColumns:
+        layout.isMaxSm || sidebarExpanded ? `${SIDEBAR_WIDTH} 1fr` : '3.5rem 1fr',
     }"
     :class="[
       'h-screen w-screen',
-      ui.isMaxSm
+      layout.isMaxSm
         ? 'flex flex-col'
         : '-ml-px grid grid-rows-[min-content_1fr] transition-[grid-template-columns] duration-300 ease-in-out',
     ]"
@@ -57,7 +58,7 @@ const breadcrumbItems = computed((): BreadcrumbItem[] => {
       <UTooltip
         arrow
         :content="{ sideOffset: 3 }"
-        :disabled="ui.isMaxSm"
+        :disabled="layout.isMaxSm"
         :kbds="['Ctrl', 'B']"
         :text="sidebarExpanded ? $t('ui.collapse_sidebar') : $t('ui.expand_sidebar')"
       >
@@ -68,29 +69,29 @@ const breadcrumbItems = computed((): BreadcrumbItem[] => {
         separator-icon="i-material-symbols:chevron-right"
         :ui="{ link: 'font-normal' }"
       />
-      <LocaleSwitcher />
-      <ColorModeSwitcher />
-      <UserMenu />
+      <AdminLocaleSelect />
+      <AdminColorModeSwitch />
+      <AdminUserMenu />
     </header>
     <aside
       style="grid-area: aside"
       :class="[
         'overflow-y-auto',
-        ui.isMaxSm
+        layout.isMaxSm
           ? ['fixed inset-x-0 top-14 bottom-0 z-10 bg-default', sidebarExpanded || 'hidden']
           : 'overflow-x-hidden border-r border-r-accented bg-elevated/15',
       ]"
     >
       <div
-        :style="{ minWidth: sidebarExpanded ? sidebarWidth : '3.5rem' }"
+        :style="{ minWidth: sidebarExpanded ? SIDEBAR_WIDTH : '3.5rem' }"
         :class="['flex flex-col gap-3 overflow-x-hidden overflow-y-auto p-3']"
       >
-        <AppBrand :sidebar-expanded />
-        <CommandPalette :sidebar-expanded />
-        <AsideNavigation :sidebar-expanded />
+        <AdminBrand :sidebar-expanded />
+        <AdminCommandPalette :sidebar-expanded />
+        <AdminNavigation :sidebar-expanded />
       </div>
     </aside>
-    <main style="grid-area: main" :class="['overflow-y-auto', ui.isMaxSm && 'flex-1']">
+    <main style="grid-area: main" :class="['overflow-y-auto', layout.isMaxSm && 'flex-1']">
       <slot></slot>
     </main>
   </div>

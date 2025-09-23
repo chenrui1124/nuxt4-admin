@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const ui = useUiStore()
+const layout = useLayoutStore()
 
 defineProps<{
   sidebarExpanded: boolean
@@ -10,7 +10,7 @@ defineProps<{
 const expandedNavigationItem = useState<string>()
 
 const items = computed<NavigationMenuItem[]>(() =>
-  ui.links.map((item, index) => ({
+  layout.links.map((item, index) => ({
     ...item,
     open: expandedNavigationItem.value === `item-${index}`,
   })),
@@ -21,7 +21,7 @@ const items = computed<NavigationMenuItem[]>(() =>
   <UNavigationMenu
     v-model="expandedNavigationItem"
     :items
-    :collapsed="!(ui.isMaxSm || sidebarExpanded)"
+    :collapsed="!(layout.isMaxSm || sidebarExpanded)"
     orientation="vertical"
     type="single"
     popover

@@ -6,7 +6,7 @@ const { tableApi } = defineProps<{
   tableApi: Table<any> | undefined
 }>()
 
-const ui = useUiStore()
+const layout = useLayoutStore()
 
 const items = computed<DropdownMenuItem[]>(
   () =>
@@ -30,7 +30,7 @@ const items = computed<DropdownMenuItem[]>(
       color="neutral"
       trailing-icon="i-fluent:layout-column-four-focus-right-24-filled"
       variant="outline"
-      :label="ui.isMaxSm ? void 0 : $t('admin.display_columns')"
+      :label="layout.isMaxSm ? void 0 : $t('admin.display_columns')"
     />
   </UDropdownMenu>
 </template>

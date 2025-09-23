@@ -13,18 +13,18 @@ defineShortcuts({
 
 const colorMode = useColorMode()
 
-const ui = useUiStore()
+const layout = useLayoutStore()
 
 const groups = computed<CommandPaletteGroup[]>(() => [
   {
     id: 'navigation',
     label: $t('ui.navigation'),
-    items: ui.links,
+    items: layout.links,
   },
   {
     id: 'color_mode',
     label: $t('ui.color_mode'),
-    items: ui.colorModes.map<CommandPaletteItem>(({ icon, label, preference }) => ({
+    items: layout.colorModes.map<CommandPaletteItem>(({ icon, label, preference }) => ({
       icon,
       label,
       active: preference === colorMode.preference,

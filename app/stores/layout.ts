@@ -1,6 +1,6 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-export const useUiStore = defineStore('ui', () => {
+export const useLayoutStore = defineStore('ui', () => {
   const { t } = useI18n()
 
   const isMaxSm = useMediaQuery('(width < 40rem)')

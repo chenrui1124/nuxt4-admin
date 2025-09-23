@@ -1,6 +1,5 @@
-import type { LoginSchema } from '#shared/schema'
-
 import { useMockAuthUser } from '#shared/mocks'
+import type { LoginSchema } from '#shared/schema'
 import bcrypt from 'bcryptjs'
 
 export default defineEventHandler(async event => {

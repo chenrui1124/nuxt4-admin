@@ -11,7 +11,7 @@ useHead({
   title: () => $t('nav.users'),
 })
 
-const ui = useUiStore()
+const layout = useLayoutStore()
 
 /*
  * Refs
@@ -174,17 +174,17 @@ function onClickBatchDelete() {
         <TableRowFilter v-model="query.searchValue" :field="$t('admin.name').toLowerCase()" />
         <UButton
           v-if="selectionCount"
-          :aria-label="ui.isMaxSm ? $t('admin.delete') : void 0"
+          :aria-label="layout.isMaxSm ? $t('admin.delete') : void 0"
           @click="onClickBatchDelete()"
           color="error"
           icon="i-fluent:delete-24-filled"
-          :label="ui.isMaxSm ? void 0 : $t('admin.delete')"
+          :label="layout.isMaxSm ? void 0 : $t('admin.delete')"
         />
         <UButton
-          :aria-label="ui.isMaxSm ? $t('admin.new_user') : void 0"
+          :aria-label="layout.isMaxSm ? $t('admin.new_user') : void 0"
           @click="upsertModalRef?.useUpsertUser()"
           icon="i-fluent:add-24-regular"
-          :label="ui.isMaxSm ? void 0 : $t('admin.new_user')"
+          :label="layout.isMaxSm ? void 0 : $t('admin.new_user')"
         />
         <TableColumnDisplayControl :table-api="tableRef?.tableApi" />
       </div>
@@ -201,7 +201,7 @@ function onClickBatchDelete() {
         :ui="{ thead: 'bg-muted' }"
       />
       <div class="flex h-14 shrink-0 items-center border-t border-t-accented px-3">
-        <span v-if="selectionCount && !ui.isMaxSm" class="ml-px text-sm/normal text-muted">
+        <span v-if="selectionCount && !layout.isMaxSm" class="ml-px text-sm/normal text-muted">
           {{
             $t('admin.selection_count', {
               count: selectionCount,
@@ -214,7 +214,7 @@ function onClickBatchDelete() {
           @update:page="restoreSelection"
           :items-per-page="query.pageSize"
           :total="data.meta.total"
-          :class="ui.isMaxSm ? 'mx-auto' : 'ml-auto'"
+          :class="layout.isMaxSm ? 'mx-auto' : 'ml-auto'"
         />
       </div>
     </div>
