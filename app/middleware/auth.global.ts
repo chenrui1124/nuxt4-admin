@@ -6,7 +6,4 @@ export default defineNuxtRouteMiddleware(to => {
   if (to.meta.group === 'auth' && loggedIn.value) {
     return navigateTo('/')
   }
-  if (to.path === '/') {
-    return navigateTo('/dashboard')
-  }
 })

@@ -9,7 +9,7 @@ export const useLayoutStore = defineStore('ui', () => {
     {
       label: t('nav.dashboard'),
       icon: 'i-material-symbols:view-kanban-rounded',
-      to: '/dashboard',
+      to: '/',
     },
     {
       label: t('nav.permissions'),
