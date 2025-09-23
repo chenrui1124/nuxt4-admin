@@ -79,5 +79,9 @@
     "search": "搜索",
     "system": "跟随系统",
     "type_command": "输入命令或搜索..."
+  },
+  "common": {
+    "confirm": "确认",
+    "cancel": "取消"
   }
 }

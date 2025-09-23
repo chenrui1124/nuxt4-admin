@@ -79,5 +79,9 @@
     "search": "Search",
     "system": "System",
     "type_command": "Type a command or search..."
+  },
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   }
 }
