@@ -6,10 +6,12 @@ export type UserSelectModel = InferSelectModel<typeof schema.users>
 
 export type UserInsertModel = InferInsertModel<typeof schema.users>
 
-export type SafeUserSelectModel = Omit<UserSelectModel, 'hashedPassword'>
+export type SafeUserSelectModel = Omit<UserSelectModel, 'passwordHash'>
 
-export type SafeUserInsertModel = Omit<UserInsertModel, 'hashedPassword'>
+export type SafeUserInsertModel = Omit<UserInsertModel, 'passwordHash'>
 
 export type RoleSelectModel = InferSelectModel<typeof schema.roles>
 
 export type RoleInsertModel = InferInsertModel<typeof schema.roles>
+
+export type DefaultRoleSelectModel = InferSelectModel<typeof schema.defaultRole>

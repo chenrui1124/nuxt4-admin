@@ -11,9 +11,9 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 401 })
   }
 
-  const isMatch = bcrypt.compareSync(password, user.hashedPassword)
+  const isMatch = bcrypt.compareSync(password, user.passwordHash)
   if (isMatch) {
-    const { hashedPassword: _, ...safeUser } = user
+    const { passwordHash: _, ...safeUser } = user
     await setUserSession(
       event,
       { user: safeUser },

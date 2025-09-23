@@ -1,28 +1,26 @@
 import { useMockDatabase } from '#shared/mocks'
-import type { PaginationSchema } from '#shared/schema'
+import type { SearchSchema } from '#shared/schema'
 
 export default defineEventHandler(async (event): Promise<GetRolesResponse> => {
   const { id } = await requireUserSession(event)
 
   const db = useMockDatabase(id)
 
-  const { pageIndex, pageSize, searchFiled, searchValue } = getQuery<PaginationSchema>(event)
+  const { searchFiled, searchValue } = getQuery<SearchSchema>(event)
 
   const roles = db.roles.findMany()
+
+  const defaultRole = db.defaultRole.findFirst()
 
   const filteredRoles =
     searchValue && searchFiled && searchFiled === 'name'
       ? roles.filter(user => user[searchFiled].includes(name))
       : roles
 
-  const start = (Number(pageIndex) - 1) * Number(pageSize)
-
-  const data = filteredRoles.slice(start, start + Number(pageSize))
-
   return {
-    data,
+    data: filteredRoles,
     meta: {
-      total: roles.length,
+      defaultRoleId: defaultRole.roleId,
     },
   }
 })

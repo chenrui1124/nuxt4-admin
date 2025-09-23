@@ -1,12 +1,11 @@
-type ResponseWithPagination<T> = {
-  data: T
-  meta: {
-    total: number
-  }
+type ResponseWithMeta<D extends object & Array, M = {}> = {
+  data: D
+  meta: M
 }
 
-export type GetUsersResponse = ResponseWithPagination<
-  (SafeUserSelectModel & { role: Pick<RoleSelectModel, 'name'> })[]
+export type GetUsersResponse = ResponseWithMeta<
+  Array<SafeUserSelectModel & { role: Pick<RoleSelectModel, 'name'> }>,
+  { total: number }
 >
 
-export type GetRolesResponse = ResponseWithPagination<RoleSelectModel[]>
+export type GetRolesResponse = ResponseWithMeta<RoleSelectModel[], { defaultRoleId: string }>

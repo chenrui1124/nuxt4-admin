@@ -53,13 +53,21 @@ export const useSignupSchema = ({
 export type SignupSchema = z.output<ReturnType<typeof useSignupSchema>>
 
 /*
- * Pagination
+ * Search
  */
-export const usePaginationSchema = () =>
+export const useSearchSchema = () =>
   z.object({
-    pageIndex: z.number().min(0),
-    pageSize: z.number().min(10),
     searchFiled: z.string().optional(),
     searchValue: z.string().optional(),
   })
-export type PaginationSchema = z.output<ReturnType<typeof usePaginationSchema>>
+export type SearchSchema = z.output<ReturnType<typeof useSearchSchema>>
+
+/*
+ * Pagination with search
+ */
+export const usePaginationWithSearchSchema = () =>
+  useSearchSchema().extend({
+    pageIndex: z.number().min(0),
+    pageSize: z.number().min(10),
+  })
+export type PaginationWithSearchSchema = z.output<ReturnType<typeof usePaginationWithSearchSchema>>
