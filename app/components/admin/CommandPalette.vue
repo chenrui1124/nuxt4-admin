@@ -19,7 +19,7 @@ const groups = computed<CommandPaletteGroup[]>(() => [
   {
     id: 'navigation',
     label: $t('ui.navigation'),
-    items: layout.links,
+    items: [...layout.topLinks, ...layout.bottomLinks],
   },
   {
     id: 'color_mode',

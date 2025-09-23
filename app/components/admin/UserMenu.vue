@@ -11,6 +11,7 @@ const items = computed<DropdownMenuItem[]>(() => [
     icon: 'i-lineicons:github',
     label: $t('ui.github_repository'),
     to: 'https://github.com/chenrui1124/nuxt4-admin',
+    target: '_blank',
   },
   {
     icon: 'i-fluent:sign-out-24-filled',

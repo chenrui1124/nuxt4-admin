@@ -59,6 +59,8 @@
   },
   "nav": {
     "dashboard": "概览",
+    "documentation": "文档",
+    "feedback": "反馈",
     "general": "常规设置",
     "permissions": "权限",
     "roles": "角色管理",

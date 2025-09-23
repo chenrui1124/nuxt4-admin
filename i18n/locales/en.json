@@ -63,6 +63,8 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "documentation": "Documentation",
+    "feedback": "Feedback",
     "general": "General",
     "permissions": "Permissions",
     "roles": "Roles",

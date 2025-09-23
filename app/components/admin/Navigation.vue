@@ -10,7 +10,7 @@ defineProps<{
 const expandedNavigationItem = useState<string>()
 
 const items = computed<NavigationMenuItem[]>(() =>
-  layout.links.map((item, index) => ({
+  layout.topLinks.map((item, index) => ({
     ...item,
     open: expandedNavigationItem.value === `item-${index}`,
   })),
@@ -18,12 +18,15 @@ const items = computed<NavigationMenuItem[]>(() =>
 </script>
 
 <template>
-  <UNavigationMenu
-    v-model="expandedNavigationItem"
-    :items
-    :collapsed="!(layout.isMaxSm || sidebarExpanded)"
-    orientation="vertical"
-    type="single"
-    popover
-  />
+  <div class="flex flex-1 flex-col gap-1.5">
+    <UNavigationMenu
+      v-model="expandedNavigationItem"
+      :items
+      :collapsed="!(layout.isMaxSm || sidebarExpanded)"
+      orientation="vertical"
+      type="single"
+      popover
+    />
+    <UNavigationMenu :items="layout.bottomLinks" orientation="vertical" class="mt-auto" />
+  </div>
 </template>

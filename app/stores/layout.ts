@@ -5,7 +5,7 @@ export const useLayoutStore = defineStore('ui', () => {
 
   const isMaxSm = useMediaQuery('(width < 40rem)')
 
-  const links = computed<NavigationMenuItem[]>(() => [
+  const topLinks = computed<NavigationMenuItem[]>(() => [
     {
       label: t('nav.dashboard'),
       icon: 'i-material-symbols:view-kanban-rounded',
@@ -45,6 +45,21 @@ export const useLayoutStore = defineStore('ui', () => {
     },
   ])
 
+  const bottomLinks = computed<NavigationMenuItem[]>(() => [
+    {
+      label: t('nav.feedback'),
+      icon: 'i-fluent:person-feedback-24-filled',
+      to: 'https://github.com/chenrui1124/nuxt4-admin',
+      target: '_blank',
+    },
+    {
+      label: t('nav.documentation'),
+      icon: 'i-fluent:book-24-filled',
+      to: 'https://github.com/chenrui1124/nuxt4-admin',
+      target: '_blank',
+    },
+  ])
+
   const colorModes = computed(() => [
     {
       preference: 'system' as const,
@@ -63,5 +78,10 @@ export const useLayoutStore = defineStore('ui', () => {
     },
   ])
 
-  return { isMaxSm, links, colorModes }
+  return {
+    isMaxSm,
+    topLinks,
+    bottomLinks,
+    colorModes,
+  }
 })

@@ -75,16 +75,15 @@ const breadcrumbItems = computed((): BreadcrumbItem[] => {
     </header>
     <aside
       style="grid-area: aside"
-      :class="[
-        'overflow-y-auto',
+      :class="
         layout.isMaxSm
           ? ['fixed inset-x-0 top-14 bottom-0 z-10 bg-default', sidebarExpanded || 'hidden']
-          : 'overflow-x-hidden border-r border-r-accented bg-elevated/15',
-      ]"
+          : 'overflow-x-hidden border-r border-r-accented bg-elevated/15'
+      "
     >
       <div
         :style="{ minWidth: sidebarExpanded ? SIDEBAR_WIDTH : '3.5rem' }"
-        :class="['flex flex-col gap-3 overflow-x-hidden overflow-y-auto p-3']"
+        class="flex h-full flex-col gap-3 overflow-x-hidden overflow-y-auto p-3"
       >
         <AdminBrand :sidebar-expanded />
         <AdminCommandPalette :sidebar-expanded />
