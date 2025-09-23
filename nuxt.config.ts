@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   css: ['~/app.css'],
   devtools: { enabled: true },
+  experimental: {
+    viewTransition: true,
+  },
   ssr: false,
 
   // Modules

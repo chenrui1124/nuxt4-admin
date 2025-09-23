@@ -10,7 +10,13 @@ const currentIndex = computed(() =>
 function nextColorMode() {
   const nextIndex = (currentIndex.value + 1) % layout.colorModes.length
   const preference = layout.colorModes[nextIndex]!.preference
-  if (preference) colorMode.preference = preference
+  if (document.startViewTransition) {
+    document.startViewTransition(() => {
+      if (preference) colorMode.preference = preference
+    })
+  } else {
+    if (preference) colorMode.preference = preference
+  }
 }
 </script>
 
