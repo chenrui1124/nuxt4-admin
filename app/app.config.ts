@@ -4,5 +4,10 @@ export default defineAppConfig({
       primary: 'teal',
       neutral: 'zinc',
     },
+    button: {
+      slots: {
+        base: 'select-none',
+      },
+    },
   },
 })
