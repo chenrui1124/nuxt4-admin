@@ -22,7 +22,7 @@ const query = reactive<SearchSchema>({
   searchValue: '',
 })
 
-const { data } = useFetch('/api/roles', {
+const { data, status } = useFetch('/api/roles', {
   default: () =>
     ({
       data: [],
@@ -130,6 +130,7 @@ const useActionsCellDropdownMenuItem = (row: Row<SerializeRole>): DropdownMenuIt
         :column-pinning="{ left: ['select'], right: ['actions'] }"
         :data="data.data"
         :empty="$t('admin.empty')"
+        :loading="status === 'pending'"
         sticky="header"
         class="flex-1 overflow-y-auto"
         :ui="{ thead: 'bg-muted' }"

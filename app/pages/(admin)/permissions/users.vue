@@ -25,7 +25,7 @@ const query = reactive<PaginationWithSearchSchema>({
   searchValue: '',
 })
 
-const { data } = useFetch('/api/users', {
+const { data, status } = useFetch('/api/users', {
   default: () =>
     ({
       data: [],
@@ -171,6 +171,7 @@ function onConfirmDeleteUsers() {
         :column-pinning="{ left: ['select'], right: ['actions'] }"
         :data="data.data"
         :empty="$t('admin.empty')"
+        :loading="status === 'pending'"
         sticky="header"
         class="flex-1 overflow-y-auto"
         :ui="{ thead: 'bg-muted' }"
