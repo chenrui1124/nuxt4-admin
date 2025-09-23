@@ -1,7 +1,11 @@
 import type { Config } from 'prettier'
 
 export default {
-  plugins: ['prettier-plugin-packagejson', 'prettier-plugin-tailwindcss'],
+  plugins: [
+    'prettier-plugin-organize-imports',
+    'prettier-plugin-packagejson',
+    'prettier-plugin-tailwindcss',
+  ],
   tailwindStylesheet: './app/app.css',
   arrowParens: 'avoid',
   bracketSameLine: false,
