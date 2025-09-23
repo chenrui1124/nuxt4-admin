@@ -69,8 +69,8 @@ const breadcrumbItems = computed((): BreadcrumbItem[] => {
         separator-icon="i-material-symbols:chevron-right"
         :ui="{ link: 'font-normal' }"
       />
-      <AdminLocaleSelect />
-      <AdminColorModeSwitch />
+      <LocaleSelect />
+      <ColorModeSwitch />
       <AdminUserMenu />
     </header>
     <aside
