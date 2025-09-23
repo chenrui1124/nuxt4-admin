@@ -8,7 +8,8 @@ export default defineEventHandler(async (event): Promise<GetUsersResponse> => {
 
   const users = db.users.findManyWithRoleName()
 
-  const { pageIndex, pageSize, searchFiled, searchValue } = getQuery<PaginationWithSearchSchema>(event)
+  const { pageIndex, pageSize, searchFiled, searchValue } =
+    getQuery<PaginationWithSearchSchema>(event)
 
   const filteredUsers =
     searchValue && searchFiled && searchFiled === 'name'
