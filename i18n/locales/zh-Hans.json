@@ -17,7 +17,7 @@
     "new_user": "创建用户",
     "role": "角色",
     "save_changes": "保存更改",
-    "selection_count": "已选择 {count} / {total} 行",
+    "selection_count": "已选择 {selectedCount} / {totalCount} 行",
     "send_verification_email": "发送验证邮件"
   },
   "auth": {

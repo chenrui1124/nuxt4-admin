@@ -17,7 +17,7 @@
     "new_user": "New user",
     "role": "Role",
     "save_changes": "Save changes",
-    "selection_count": "{count} of {total} row(s) selected",
+    "selection_count": "{selectedCount} of {totalCount} row(s) selected",
     "send_verification_email": "Send verification email"
   },
   "auth": {

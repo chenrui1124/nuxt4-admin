@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import type { TableColumn } from '@nuxt/ui'
+import type { DropdownMenuItem, TableColumn } from '@nuxt/ui'
+import type { Row, Table } from '@tanstack/vue-table'
 import type { PaginationSchema } from '~~/shared/schema'
 
 definePageMeta({
@@ -14,23 +15,7 @@ useHead({
 const layout = useLayoutStore()
 
 /*
- * Refs
- */
-const tableRef = useTemplateRef('table')
-const upsertModalRef = useTemplateRef('upsertModal')
-const deleteModalRef = useTemplateRef('deleteModal')
-
-/*
- * Resolve components
- */
-const UAvatar = resolveComponent('UAvatar')
-const UBadge = resolveComponent('UBadge')
-const UButton = resolveComponent('UButton')
-const UCheckbox = resolveComponent('UCheckbox')
-const UDropdownMenu = resolveComponent('UDropdownMenu')
-
-/*
- * Pagination & Filter
+ * Source data
  */
 const query = reactive<PaginationSchema>({
   pageSize: 30,
@@ -39,15 +24,17 @@ const query = reactive<PaginationSchema>({
   searchValue: '',
 })
 
-/*
- * Source data
- */
 const { data } = useFetch('/api/users', {
   default: () => ({ data: [], meta: { total: 0 } }),
   query,
 })
 
 type SerializeSafeUser = (typeof data.value.data)[number]
+
+/*
+ * Refs
+ */
+const tableRef = useTemplateRef<{ tableApi: Table<SerializeSafeUser> }>('table')
 
 /*
  * Column definitions
@@ -57,114 +44,58 @@ const columns = computed<TableColumn<SerializeSafeUser>[]>(() => [
     id: 'select',
     enableHiding: false,
     enablePinning: true,
-    header: ({ table }) =>
-      h(UCheckbox, {
-        modelValue: table.getIsSomePageRowsSelected()
-          ? 'indeterminate'
-          : table.getIsAllPageRowsSelected(),
-        'onUpdate:modelValue': (value: boolean | 'indeterminate') =>
-          table.toggleAllPageRowsSelected(!!value),
-      }),
-    cell: ({ row }) =>
-      h(UCheckbox, {
-        modelValue: row.getIsSelected(),
-        'onUpdate:modelValue': (value: boolean | 'indeterminate') => row.toggleSelected(!!value),
-      }),
   },
   {
     accessorKey: 'name',
     enableHiding: false,
     header: $t('admin.name'),
-    cell: ({ row }) => row.getValue('name'),
+    cell: ({ getValue }) => getValue(),
   },
   {
     accessorKey: 'avatar',
     header: $t('admin.avatar'),
-    cell: ({ row }) =>
-      h(UAvatar, {
-        alt: row.getValue('name'),
-        size: 'sm',
-        src: row.getValue('avatar'),
-      }),
   },
   {
     accessorKey: 'role',
     header: $t('admin.role'),
-    cell: ({ row }) =>
-      h(
-        UBadge,
-        { color: 'neutral', variant: 'soft' },
-        { default: () => row.getValue<SerializeSafeUser['role']>('role').name },
-      ),
   },
   {
     id: 'created_at',
     accessorKey: 'createdAt',
     header: $t('admin.created_at'),
-    cell: ({ row }) => new Date(row.getValue('created_at')).toLocaleDateString(),
   },
   {
     accessorKey: 'email',
     header: $t('admin.email'),
-    cell: ({ row }) => row.getValue('email'),
+    cell: ({ getValue }) => getValue(),
   },
   {
     id: 'actions',
     enableHiding: false,
     enablePinning: true,
-    cell: ({ row }) =>
-      h(
-        UDropdownMenu,
-        {
-          content: {
-            align: 'end',
-          },
-          items: [
-            {
-              icon: 'i-fluent:edit-24-filled',
-              label: $t('admin.edit'),
-              onSelect() {
-                upsertModalRef.value?.useUpsertUser(row.original)
-              },
-            },
-            {
-              color: 'error',
-              icon: 'i-fluent:delete-24-filled',
-              label: $t('admin.delete'),
-              onSelect() {
-                deleteModalRef.value?.useDeleteUsers([row.original])
-              },
-            },
-          ],
-        },
-        {
-          default: () =>
-            h(UButton, {
-              color: 'neutral',
-              icon: 'i-fluent:more-vertical-24-filled',
-              variant: 'ghost',
-            }),
-        },
-      ),
   },
 ])
 
-/*
- * Row selection
- */
-const [selection, restoreSelection] = useDefaultRef<Record<number, true>>(() => ({}))
+const useActionsCellDropdownMenuItem = (row: Row<SerializeSafeUser>): DropdownMenuItem[] => [
+  {
+    icon: 'i-fluent:edit-24-filled',
+    label: $t('admin.edit'),
+    onSelect() {},
+  },
+  {
+    color: 'error',
+    icon: 'i-fluent:delete-24-filled',
+    label: $t('admin.delete'),
+    onSelect() {},
+  },
+]
 
-const selectionCount = computed(() => Object.keys(selection.value).length)
-
 /*
- * Actions
+ * Selected count
  */
-function onClickBatchDelete() {
-  const selectedItems = tableRef.value?.tableApi.getSelectedRowModel().rows.map(row => row.original)
-  if (selectedItems) {
-    deleteModalRef.value?.useDeleteUsers(selectedItems)
-  }
-}
+const selectedCount = computed(() => tableRef.value?.tableApi.getSelectedRowModel().rows.length)
+
+const totalCount = computed(() => tableRef.value?.tableApi.getRowCount())
 </script>
 
 <template>
@@ -173,16 +104,16 @@ function onClickBatchDelete() {
       <div class="flex h-14 shrink-0 items-center gap-3 border-b border-b-accented px-3">
         <TableRowFilter v-model="query.searchValue" :field="$t('admin.name').toLowerCase()" />
         <UButton
-          v-if="selectionCount"
+          v-if="selectedCount"
           :aria-label="layout.isMaxSm ? $t('admin.delete') : void 0"
-          @click="onClickBatchDelete()"
+          @click=""
           color="error"
           icon="i-fluent:delete-24-filled"
           :label="layout.isMaxSm ? void 0 : $t('admin.delete')"
         />
         <UButton
           :aria-label="layout.isMaxSm ? $t('admin.new_user') : void 0"
-          @click="upsertModalRef?.useUpsertUser()"
+          @click=""
           icon="i-fluent:add-24-regular"
           :label="layout.isMaxSm ? void 0 : $t('admin.new_user')"
         />
@@ -190,8 +121,8 @@ function onClickBatchDelete() {
       </div>
       <UTable
         ref="table"
-        v-model:row-selection="selection"
-        @select="row => row.toggleSelected()"
+        @state-change="tableRef?.tableApi.resetRowSelection()"
+        @select="$event.toggleSelected()"
         :columns
         :column-pinning="{ left: ['select'], right: ['actions'] }"
         :data="data.data"
@@ -199,19 +130,42 @@ function onClickBatchDelete() {
         sticky="header"
         class="flex-1 overflow-y-auto"
         :ui="{ thead: 'bg-muted' }"
-      />
+      >
+        <template #select-header="{ table }">
+          <UCheckbox
+            :model-value="
+              table.getIsSomePageRowsSelected() ? 'indeterminate' : table.getIsAllPageRowsSelected()
+            "
+            @update:model-value="table.toggleAllPageRowsSelected(!!$event)"
+          />
+        </template>
+        <template #select-cell="{ row }">
+          <UCheckbox
+            :model-value="row.getIsSelected()"
+            @update:model-value="row.toggleSelected(!!$event)"
+          />
+        </template>
+        <template #avatar-cell="{ row }">
+          <UAvatar :alt="row.getValue('name')" size="sm" :src="row.getValue('avatar')" />
+        </template>
+        <template #role-cell="{ getValue }">
+          <UBadge color="neutral" variant="soft">
+            {{ (getValue() as SerializeSafeUser['role']).name }}
+          </UBadge>
+        </template>
+        <template #created_at-cell="{ getValue }">
+          <NuxtTime :datetime="getValue<string>()" />
+        </template>
+        <template #actions-cell="{ row }">
+          <UDropdownMenu :content="{ align: 'end' }" :items="useActionsCellDropdownMenuItem(row)">
+            <UButton color="neutral" icon="i-fluent:more-vertical-24-filled" variant="ghost" />
+          </UDropdownMenu>
+        </template>
+      </UTable>
       <div class="flex h-14 shrink-0 items-center border-t border-t-accented px-3">
-        <span v-if="selectionCount && !layout.isMaxSm" class="ml-px text-sm/normal text-muted">
-          {{
-            $t('admin.selection_count', {
-              count: selectionCount,
-              total: tableRef?.tableApi.getRowCount(),
-            })
-          }}
-        </span>
+        <TableSelectedCount :total-count :selected-count />
         <UPagination
           v-model:page="query.pageIndex"
-          @update:page="restoreSelection"
           :items-per-page="query.pageSize"
           :total="data.meta.total"
           :class="layout.isMaxSm ? 'mx-auto' : 'ml-auto'"

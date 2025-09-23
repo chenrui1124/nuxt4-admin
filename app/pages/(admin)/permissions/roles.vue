@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import type { TableColumn } from '@nuxt/ui'
+import type { DropdownMenuItem, TableColumn } from '@nuxt/ui'
+import type { Row, Table } from '@tanstack/vue-table'
 import type { PaginationSchema } from '~~/shared/schema'
 
 definePageMeta({
@@ -14,15 +15,7 @@ useHead({
 const layout = useLayoutStore()
 
 /*
- * Resolve components
- */
-const UButton = resolveComponent('UButton')
-const UCheckbox = resolveComponent('UCheckbox')
-const UDropdownMenu = resolveComponent('UDropdownMenu')
-const USwitch = resolveComponent('USwitch')
-
-/*
- * Pagination & Filter
+ * Source data
  */
 const query = reactive<PaginationSchema>({
   pageSize: 30,
@@ -31,9 +24,6 @@ const query = reactive<PaginationSchema>({
   searchValue: '',
 })
 
-/*
- * Source data
- */
 const { data } = useFetch('/api/roles', {
   default: () => ({ data: [], meta: { total: 0 } }),
   query,
@@ -42,28 +32,18 @@ const { data } = useFetch('/api/roles', {
 type SerializeRole = (typeof data.value.data)[number]
 
 /*
+ * Refs
+ */
+const tableRef = useTemplateRef<{ tableApi: Table<SerializeRole> }>('table')
+
+/*
  * Column definitions
  */
-const tableRef = useTemplateRef('table')
-
 const columns = computed<TableColumn<SerializeRole>[]>(() => [
   {
     id: 'select',
     enableHiding: false,
     enablePinning: true,
-    header: ({ table }) =>
-      h(UCheckbox, {
-        modelValue: table.getIsSomePageRowsSelected()
-          ? 'indeterminate'
-          : table.getIsAllPageRowsSelected(),
-        'onUpdate:modelValue': (value: boolean | 'indeterminate') =>
-          table.toggleAllPageRowsSelected(!!value),
-      }),
-    cell: ({ row }) =>
-      h(UCheckbox, {
-        modelValue: row.getIsSelected(),
-        'onUpdate:modelValue': (value: boolean | 'indeterminate') => row.toggleSelected(!!value),
-      }),
   },
   {
     accessorKey: 'name',
@@ -74,67 +54,39 @@ const columns = computed<TableColumn<SerializeRole>[]>(() => [
   {
     accessorKey: 'enabled',
     header: $t('admin.enabled'),
-    cell: ({ row }) =>
-      h(USwitch, {
-        defaultValue: row.getValue('enabled'),
-        'onUpdate:modelValue'(enabled: boolean) {
-          //
-        },
-      }),
   },
   {
     id: 'created_at',
     accessorKey: 'createdAt',
     header: $t('admin.created_at'),
-    cell: ({ row }) => new Date(row.getValue('created_at')).toLocaleDateString(),
   },
   {
     id: 'actions',
     enableHiding: false,
     enablePinning: true,
-    cell: ({ row }) =>
-      h(
-        UDropdownMenu,
-        {
-          content: {
-            align: 'end',
-          },
-          items: [
-            {
-              icon: 'i-fluent:edit-24-filled',
-              label: $t('admin.edit'),
-              onSelect() {},
-            },
-            {
-              color: 'error',
-              icon: 'i-fluent:delete-24-filled',
-              label: $t('admin.delete'),
-              onSelect() {},
-            },
-          ],
-        },
-        {
-          default: () =>
-            h(UButton, {
-              color: 'neutral',
-              icon: 'i-fluent:more-vertical-24-filled',
-              variant: 'ghost',
-            }),
-        },
-      ),
   },
 ])
 
+const useActionsCellDropdownMenuItem = (row: Row<SerializeRole>): DropdownMenuItem[] => [
+  {
+    icon: 'i-fluent:edit-24-filled',
+    label: $t('admin.edit'),
+    onSelect() {},
+  },
+  {
+    color: 'error',
+    icon: 'i-fluent:delete-24-filled',
+    label: $t('admin.delete'),
+    onSelect() {},
+  },
+]
+
 /*
- * Row selection
+ * Selected count
  */
-const selection = ref<Record<string, boolean>>({})
+const selectedCount = computed(() => tableRef.value?.tableApi.getSelectedRowModel().rows.length)
 
-const selectionCount = computed(() => Object.keys(selection.value).length)
-
-function resetSelectionWhenUpdatePage() {
-  selection.value = {}
-}
+const totalCount = computed(() => tableRef.value?.tableApi.getRowCount())
 </script>
 
 <template>
@@ -146,8 +98,8 @@ function resetSelectionWhenUpdatePage() {
       </div>
       <UTable
         ref="table"
-        v-model:row-selection="selection"
-        @select="row => row.toggleSelected()"
+        @state-change="tableRef?.tableApi.resetRowSelection()"
+        @select="$event.toggleSelected()"
         :columns
         :column-pinning="{ left: ['select'], right: ['actions'] }"
         :data="data.data"
@@ -155,19 +107,38 @@ function resetSelectionWhenUpdatePage() {
         sticky="header"
         class="flex-1 overflow-y-auto"
         :ui="{ thead: 'bg-muted' }"
-      />
+      >
+        <template #select-header="{ table }">
+          <UCheckbox
+            :model-value="
+              table.getIsSomePageRowsSelected() ? 'indeterminate' : table.getIsAllPageRowsSelected()
+            "
+            @update:model-value="table.toggleAllPageRowsSelected(!!$event)"
+          />
+        </template>
+        <template #select-cell="{ row }">
+          <UCheckbox
+            :model-value="row.getIsSelected()"
+            @update:model-value="row.toggleSelected(!!$event)"
+          />
+        </template>
+        <template #enabled-cell="{ getValue }">
+          <!-- TODO -->
+          <USwitch :model-value="getValue<boolean>()" @update:model-value="" />
+        </template>
+        <template #created_at-cell="{ getValue }">
+          <NuxtTime :datetime="getValue<string>()" />
+        </template>
+        <template #actions-cell="{ row }">
+          <UDropdownMenu :content="{ align: 'end' }" :items="useActionsCellDropdownMenuItem(row)">
+            <UButton color="neutral" icon="i-fluent:more-vertical-24-filled" variant="ghost" />
+          </UDropdownMenu>
+        </template>
+      </UTable>
       <div class="flex h-14 shrink-0 items-center border-t border-t-accented px-3">
-        <span v-if="selectionCount && !layout.isMaxSm" class="ml-px text-sm/normal text-muted">
-          {{
-            $t('admin.selection_count', {
-              count: selectionCount,
-              total: tableRef?.tableApi.getRowCount(),
-            })
-          }}
-        </span>
+        <TableSelectedCount :total-count :selected-count />
         <UPagination
           v-model:page="query.pageIndex"
-          @update:page="resetSelectionWhenUpdatePage"
           :items-per-page="query.pageSize"
           :total="data.meta.total"
           :class="layout.isMaxSm ? 'mx-auto' : 'ml-auto'"
