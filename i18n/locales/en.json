@@ -13,6 +13,7 @@
     "empty": "No data",
     "enabled": "Enabled",
     "filter_by": "Filter by {field}",
+    "is_default": "Is default",
     "name": "Name",
     "new_user": "New user",
     "role": "Role",
@@ -52,6 +53,10 @@
     "username": "Username",
     "username_required": "Username must not be empty."
   },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
   "error": {
     "not_found": "Page not found",
     "unknown": "An unknown error occurred"
@@ -79,9 +84,5 @@
     "search": "Search",
     "system": "System",
     "type_command": "Type a command or search..."
-  },
-  "common": {
-    "confirm": "Confirm",
-    "cancel": "Cancel"
   }
 }

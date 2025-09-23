@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import type { SearchSchema } from '#shared/schema'
 import type { DropdownMenuItem, TableColumn } from '@nuxt/ui'
 import type { Row, Table } from '@tanstack/vue-table'
-import type { PaginationSchema } from '~~/shared/schema'
 
 definePageMeta({
   group: 'admin',
@@ -17,15 +17,19 @@ const layout = useLayoutStore()
 /*
  * Source data
  */
-const query = reactive<PaginationSchema>({
-  pageSize: 30,
-  pageIndex: 1,
-  searchFiled: 'name',
+const query = reactive<SearchSchema>({
+  searchFiled: 'name' as const,
   searchValue: '',
 })
 
 const { data } = useFetch('/api/roles', {
-  default: () => ({ data: [], meta: { total: 0 } }),
+  default: () =>
+    ({
+      data: [],
+      meta: {
+        defaultRoleId: '',
+      },
+    }) as GetRolesResponse,
   query,
 })
 
@@ -56,6 +60,10 @@ const columns = computed<TableColumn<SerializeRole>[]>(() => [
     header: $t('admin.enabled'),
   },
   {
+    id: 'is_default',
+    header: $t('admin.is_default'),
+  },
+  {
     id: 'created_at',
     accessorKey: 'createdAt',
     header: $t('admin.created_at'),
@@ -67,26 +75,44 @@ const columns = computed<TableColumn<SerializeRole>[]>(() => [
   },
 ])
 
-const useActionsCellDropdownMenuItem = (row: Row<SerializeRole>): DropdownMenuItem[] => [
-  {
-    icon: 'i-fluent:edit-24-filled',
-    label: $t('admin.edit'),
-    onSelect() {},
-  },
-  {
-    color: 'error',
-    icon: 'i-fluent:delete-24-filled',
-    label: $t('admin.delete'),
-    onSelect() {},
-  },
-]
-
 /*
- * Selected count
+ * Table state
  */
 const selectedCount = computed(() => tableRef.value?.tableApi.getSelectedRowModel().rows.length)
 
 const totalCount = computed(() => tableRef.value?.tableApi.getRowCount())
+
+const defaultPage = computed(
+  () => (tableRef.value?.tableApi.getState().pagination.pageIndex || 0) + 1,
+)
+
+const itemsPerPage = 30
+
+/*
+ * Row actions
+ */
+const pendingUpsertRole = ref<SerializeRole | null>(null)
+
+const pendingDeleteRole = ref<SerializeRole | null>(null)
+
+const useActionsCellDropdownMenuItem = (row: Row<SerializeRole>): DropdownMenuItem[] => [
+  {
+    icon: 'i-fluent:edit-24-filled',
+    label: $t('admin.edit'),
+    onSelect() {
+      pendingUpsertRole.value = row.original
+    },
+  },
+  {
+    color: 'error',
+    disabled: row.original.id === data.value.meta.defaultRoleId,
+    icon: 'i-fluent:delete-24-filled',
+    label: $t('admin.delete'),
+    onSelect() {
+      pendingDeleteRole.value = row.original
+    },
+  },
+]
 </script>
 
 <template>
@@ -123,8 +149,16 @@ const totalCount = computed(() => tableRef.value?.tableApi.getRowCount())
           />
         </template>
         <template #enabled-cell="{ getValue }">
-          <!-- TODO -->
-          <USwitch :model-value="getValue<boolean>()" @update:model-value="" />
+          <!-- TODO @update:modelValue -->
+          <USwitch :model-value="getValue<boolean>()" />
+        </template>
+        <template #is_default-cell="{ row }">
+          <UBadge
+            v-if="row.original.id === data.meta.defaultRoleId"
+            icon="i-fluent:checkmark-24-regular"
+            size="sm"
+            variant="soft"
+          />
         </template>
         <template #created_at-cell="{ getValue }">
           <NuxtTime :datetime="getValue<string>()" />
@@ -138,12 +172,18 @@ const totalCount = computed(() => tableRef.value?.tableApi.getRowCount())
       <div class="flex h-14 shrink-0 items-center border-t border-t-accented px-3">
         <TableSelectedCount :total-count :selected-count />
         <UPagination
-          v-model:page="query.pageIndex"
-          :items-per-page="query.pageSize"
-          :total="data.meta.total"
+          v-if="totalCount && totalCount > itemsPerPage"
+          @update:page="tableRef?.tableApi.setPageIndex($event - 1)"
+          :default-page
+          :items-per-page
+          :total="totalCount"
           :class="layout.isMaxSm ? 'mx-auto' : 'ml-auto'"
         />
       </div>
     </div>
+
+    <TableUpsertModal v-model="pendingUpsertRole" title=""> </TableUpsertModal>
+
+    <TableDeleteModal v-model="pendingDeleteRole" title=""> </TableDeleteModal>
   </NuxtLayout>
 </template>

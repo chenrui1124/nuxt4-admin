@@ -14,6 +14,7 @@
     "enabled": "启用",
     "filter_by": "按{field}筛选",
     "name": "名称",
+    "is_default": "是否默认",
     "new_user": "创建用户",
     "role": "角色",
     "save_changes": "保存更改",
