@@ -13,8 +13,8 @@
     "empty": "暂无数据",
     "enabled": "启用",
     "filter_by": "按{field}筛选",
-    "name": "名称",
     "is_default": "是否默认",
+    "name": "名称",
     "new_user": "创建用户",
     "role": "角色",
     "save_changes": "保存更改",
@@ -53,15 +53,19 @@
     "username": "用户名",
     "username_required": "用户名不能为空。"
   },
+  "common": {
+    "cancel": "取消",
+    "confirm": "确认"
+  },
   "error": {
     "not_found": "页面未找到",
     "unknown": "未知错误"
   },
   "nav": {
-    "dashboard": "概览",
     "documentation": "文档",
     "feedback": "反馈",
     "general": "常规设置",
+    "home": "主页",
     "permissions": "权限",
     "roles": "角色管理",
     "security": "安全设置",
@@ -82,9 +86,5 @@
     "search": "搜索",
     "system": "跟随系统",
     "type_command": "输入命令或搜索..."
-  },
-  "common": {
-    "confirm": "确认",
-    "cancel": "取消"
   }
 }

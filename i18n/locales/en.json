@@ -62,10 +62,10 @@
     "unknown": "An unknown error occurred"
   },
   "nav": {
-    "dashboard": "Dashboard",
     "documentation": "Documentation",
     "feedback": "Feedback",
     "general": "General",
+    "home": "Home",
     "permissions": "Permissions",
     "roles": "Roles",
     "security": "Security",

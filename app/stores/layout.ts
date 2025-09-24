@@ -7,8 +7,8 @@ export const useLayoutStore = defineStore('ui', () => {
 
   const topLinks = computed<NavigationMenuItem[]>(() => [
     {
-      label: t('nav.dashboard'),
-      icon: 'i-material-symbols:view-kanban-rounded',
+      label: t('nav.home'),
+      icon: 'i-fluent:home-24-filled',
       to: '/',
     },
     {
