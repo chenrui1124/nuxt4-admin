@@ -39,5 +39,6 @@
     "tailwindcss": "^4.1.13",
     "typescript": "6.0.0-dev.20250922",
     "vue-tsc": "^3.0.8"
-  }
+  },
+  "version": "1.0.0"
 }
