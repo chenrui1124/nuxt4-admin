@@ -86,5 +86,32 @@
     "search": "搜索",
     "system": "跟随系统",
     "type_command": "输入命令或搜索..."
+  },
+  "data": {
+    "warehouse_beijing": "北京仓",
+    "warehouse_hangzhou": "杭州仓",
+    "warehouse_zibo": "淄博仓",
+    "january": "一月",
+    "february": "二月",
+    "march": "三月",
+    "april": "四月",
+    "may": "五月",
+    "june": "六月",
+    "july": "七月",
+    "august": "八月",
+    "september": "九月",
+    "october": "十月",
+    "november": "十一月",
+    "december": "十二月",
+    "medication_cro": "注射用头孢曲松钠",
+    "medication_pip": "注射用哌拉西林钠",
+    "medication_caz": "注射用头孢他啶",
+    "medication_amx": "阿莫西林胶囊",
+    "by_warehouse": "按仓库统计",
+    "by_medication": "按药品统计",
+    "inbound_quantity": "入库数量",
+    "outbound_quantity": "出库数量",
+    "expiring_soon": "即将过期药品",
+    "low_stock_count": "低库存药品数"
   }
 }

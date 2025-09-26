@@ -4,3 +4,11 @@
 @theme {
   --default-font-family: 'Geist', var(--font-sans), var(--font-serif), sans-serif;
 }
+
+/* 
+ * Unovis
+ */
+.unovis-xy-container {
+  --vis-axis-grid-color: var(--ui-border);
+  --vis-axis-tick-color: var(--ui-border);
+}
