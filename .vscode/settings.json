@@ -11,6 +11,5 @@
       "ui:\\s*{([^)]*)\\s*}",
       "(?:'|\"|`)([^']*)(?:'|\"|`)"
     ]
-  ],
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  ]
 }

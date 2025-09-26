@@ -37,7 +37,6 @@
     "prettier-plugin-packagejson": "^2.5.19",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4.1.13",
-    "typescript": "6.0.0-dev.20250922",
     "vue-tsc": "^3.0.8"
   },
   "version": "1.0.0"
